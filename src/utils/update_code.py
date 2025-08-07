@@ -3,6 +3,7 @@ import sys
 import os
 import argparse
 import pyperclip
+import re
 from pathlib import Path
 
 # Добавляем корневую директорию проекта в sys.path
@@ -10,11 +11,48 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..',
 from src.utils.code_utils import CodeBlockManager
 from src.utils.git_integration import GitIntegration
 
+def clean_code(code):
+    """Очистка кода от лишних пустых строк и нормализация переносов"""
+    if not code:
+        return code
+    
+    # Разделяем на строки
+    lines = code.splitlines()
+    
+    # Удаляем пустые строки в начале и конце
+    while lines and lines[0].strip() == '':
+        lines.pop(0)
+    while lines and lines[-1].strip() == '':
+        lines.pop()
+    
+    # Нормализуем пустые строки (оставляем только по одной пустой строке между блоками)
+    cleaned_lines = []
+    prev_empty = False
+    
+    for line in lines:
+        is_empty = line.strip() == ''
+        
+        # Добавляем пустую строку только если предыдущая не была пустой
+        if is_empty and not prev_empty:
+            cleaned_lines.append('')
+        elif not is_empty:
+            cleaned_lines.append(line)
+        
+        prev_empty = is_empty
+    
+    # Удаляем последнюю пустую строку, если она есть
+    if cleaned_lines and cleaned_lines[-1] == '':
+        cleaned_lines.pop()
+    
+    # Объединяем с правильными переносами строк
+    return '\n'.join(cleaned_lines)
+
 def read_code_from_file(file_path):
     """Чтение кода из файла"""
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
-            return f.read()
+            code = f.read()
+            return clean_code(code)
     except Exception as e:
         print(f"Ошибка чтения файла: {e}")
         return None
@@ -22,7 +60,8 @@ def read_code_from_file(file_path):
 def read_code_from_clipboard():
     """Чтение кода из буфера обмена"""
     try:
-        return pyperclip.paste()
+        code = pyperclip.paste()
+        return clean_code(code)
     except Exception as e:
         print(f"Ошибка чтения из буфера обмена: {e}")
         return None
@@ -36,9 +75,9 @@ def read_code_interactive():
         if line == "":
             break
         lines.append(line)
-    return "\n".join(lines)
+    return clean_code('\n'.join(lines))
 
-def update_block(block_id, new_code, no_commit=False, confirm=False):
+def update_block(block_id, new_code, no_commit=False, confirm=False, dry_run=False):
     """Обновление блока кода"""
     manager = CodeBlockManager()
     
@@ -53,6 +92,14 @@ def update_block(block_id, new_code, no_commit=False, confirm=False):
         if response.lower() != 'y':
             print("Обновление отменено")
             return False
+    
+    if dry_run:
+        print(f"[DRY RUN] Блок {block_id} будет обновлен")
+        print(f"Новый код ({len(new_code)} символов):")
+        print("-" * 40)
+        print(new_code)
+        print("-" * 40)
+        return True
     
     try:
         result = manager.replace_block(block_id, new_code)
@@ -92,6 +139,9 @@ def main():
 
   # С подтверждением
   python src/utils/update_code.py block_id --file code.txt --confirm
+
+  # Тестовый запуск (без реальных изменений)
+  python src/utils/update_code.py block_id --file code.txt --dry-run
         """
     )
     
@@ -105,6 +155,7 @@ def main():
     
     parser.add_argument('--no-commit', action='store_true', help='Не делать автоматический коммит')
     parser.add_argument('--confirm', action='store_true', help='Запросить подтверждение перед обновлением')
+    parser.add_argument('--dry-run', action='store_true', help='Тестовый запуск без реальных изменений')
     
     args = parser.parse_args()
     
@@ -112,13 +163,13 @@ def main():
     new_code = None
     
     if args.code:
-        new_code = args.code
+        new_code = clean_code(args.code)
     elif args.file:
         new_code = read_code_from_file(args.file)
     elif args.clipboard:
         new_code = read_code_from_clipboard()
         if new_code:
-            print(f"Код из буфера обмена ({len(new_code)} символов)")
+            print(f"Код из буфера обмена ({len(new_code)} символов) - очищен от лишних пустых строк")
     elif args.interactive:
         new_code = read_code_interactive()
     else:
@@ -128,14 +179,14 @@ def main():
             print("Не удалось получить код из буфера обмена, используйте --file, --interactive или --code")
             sys.exit(1)
         else:
-            print(f"Код из буфера обмена ({len(new_code)} символов)")
+            print(f"Код из буфера обмена ({len(new_code)} символов) - очищен от лишних пустых строк")
     
     if not new_code:
         print("Не удалось получить код для замены")
         sys.exit(1)
     
     # Обновляем блок
-    success = update_block(args.block_id, new_code, args.no_commit, args.confirm)
+    success = update_block(args.block_id, new_code, args.no_commit, args.confirm, args.dry_run)
     
     if success:
         print("Готово!")
