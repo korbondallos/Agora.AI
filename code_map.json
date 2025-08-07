@@ -1,0 +1,845 @@
+{
+  "metadata": {
+    "project": "Agora.AI",
+    "version": "1.0.0",
+    "last_updated": "2023-11-15T00:00:00Z",
+    "description": "Финальная кодовая карта для MVP с масштабируемостью",
+    "architecture": "3-layer with event-driven communication",
+    "mvp_ready": true,
+    "scalable": true,
+    "error_handling": "centralized",
+    "caching": "transparent",
+    "testing": "automated"
+  },
+  "layers": {
+    "ui_layer": {
+      "description": "UI Layer (Presentation) - компоненты интерфейса с поддержкой мультиплатформенности",
+      "modules": {
+        "auth_module": {
+          "id": "auth_module",
+          "file": "src/ui/auth.module.ts",
+          "start_tag": "// AGORA_BLOCK: start:auth_module",
+          "end_tag": "// AGORA_BLOCK: end:auth_module",
+          "description": "Авторизация через Telegram и в будущем через email/web",
+          "dependencies": ["api_service", "error_handler", "telegram_integration"],
+          "platforms": ["telegram", "web", "ios"],
+          "events": ["auth.success", "auth.failed"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "company_profile_module": {
+          "id": "company_profile_module",
+          "file": "src/ui/companyProfile.module.ts",
+          "start_tag": "// AGORA_BLOCK: start:company_profile_module",
+          "end_tag": "// AGORA_BLOCK: end:company_profile_module",
+          "description": "UI-модуль для редактирования профиля компании",
+          "dependencies": ["api_service", "file_uploader", "error_handler", "profile_manager"],
+          "platforms": ["telegram", "web", "ios"],
+          "events": ["profile.updated", "profile.created"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "swipe_cards_module": {
+          "id": "swipe_cards_module",
+          "file": "src/ui/swipeCards.module.ts",
+          "start_tag": "// AGORA_BLOCK: start:swipe_cards_module",
+          "end_tag": "// AGORA_BLOCK: end:swipe_cards_module",
+          "description": "Основная лента свайпов (Tinder-like интерфейс) с анимациями",
+          "dependencies": ["api_service", "match_engine", "cache_service", "error_handler", "card_manager"],
+          "platforms": ["telegram", "web", "ios"],
+          "events": ["swipe.performed", "match.found", "match.processed"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "logistics_module": {
+          "id": "logistics_module",
+          "file": "src/ui/logistics.module.ts",
+          "start_tag": "// AGORA_BLOCK: start:logistics_module",
+          "end_tag": "// AGORA_BLOCK: end:logistics_module",
+          "description": "Карта логистики и визуализация маршрутов с интерактивными элементами",
+          "dependencies": ["api_service", "logistics_ai", "map_service", "error_handler"],
+          "platforms": ["telegram", "web", "ios"],
+          "events": ["route.optimized", "route.selected"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "chat_module": {
+          "id": "chat_module",
+          "file": "src/ui/chat.module.ts",
+          "start_tag": "// AGORA_BLOCK: start:chat_module",
+          "end_tag": "// AGORA_BLOCK: end:chat_module",
+          "description": "Чат-переговоры между компаниями с поддержкой медиа и документов",
+          "dependencies": ["api_service", "negotiation_orchestrator", "realtime_service", "error_handler"],
+          "platforms": ["telegram", "web", "ios"],
+          "events": ["message.sent", "message.received", "negotiation.updated"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "contract_module": {
+          "id": "contract_module",
+          "file": "src/ui/contract.module.ts",
+          "start_tag": "// AGORA_BLOCK: start:contract_module",
+          "end_tag": "// AGORA_BLOCK: end:contract_module",
+          "description": "Генерация и подписание договоров с электронной подписью",
+          "dependencies": ["api_service", "contract_generator", "blockchain_integration", "esign_service", "error_handler"],
+          "platforms": ["telegram", "web", "ios"],
+          "events": ["contract.generated", "contract.signed"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "settings_module": {
+          "id": "settings_module",
+          "file": "src/ui/settings.module.ts",
+          "start_tag": "// AGORA_BLOCK: start:settings_module",
+          "end_tag": "// AGORA_BLOCK: end:settings_module",
+          "description": "Настройки языка, уведомлений и профиля с темой",
+          "dependencies": ["api_service", "translation_ai", "storage_service", "error_handler"],
+          "platforms": ["telegram", "web", "ios"],
+          "events": ["settings.updated", "language.changed"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        }
+      }
+    },
+    "business_logic_layer": {
+      "description": "Business Logic Layer - ядро бизнес-логики с event-driven архитектурой",
+      "modules": {
+        "profile_manager": {
+          "id": "profile_manager",
+          "file": "src/business/profileManager.py",
+          "start_tag": "# AGORA_BLOCK: start:profile_manager",
+          "end_tag": "# AGORA_BLOCK: end:profile_manager",
+          "description": "Статическая информация о компании, которую заполняет и обновляет пользователь",
+          "dependencies": ["error_handler", "monitoring_service", "kyc_verifier"],
+          "events": ["profile.updated", "profile.verified"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "card_manager": {
+          "id": "card_manager",
+          "file": "src/business/cardManager.py",
+          "start_tag": "# AGORA_BLOCK: start:card_manager",
+          "end_tag": "# AGORA_BLOCK: end:card_manager",
+          "description": "Динамические карточки, создаваемые под конкретный товар/услугу и категорию",
+          "dependencies": ["profile_manager", "product_catalog", "error_handler", "monitoring_service"],
+          "events": ["card.created", "card.updated", "card.archived"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "product_catalog": {
+          "id": "product_catalog",
+          "file": "src/business/productCatalog.py",
+          "start_tag": "# AGORA_BLOCK: start:product_catalog",
+          "end_tag": "# AGORA_BLOCK: end:product_catalog",
+          "description": "Каталог товаров компании с категориями и характеристиками",
+          "dependencies": ["error_handler", "monitoring_service"],
+          "events": ["product.added", "product.updated"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "match_engine": {
+          "id": "match_engine",
+          "file": "src/business/matchEngine.py",
+          "start_tag": "# AGORA_BLOCK: start:match_engine",
+          "end_tag": "# AGORA_BLOCK: end:match_engine",
+          "description": "Ищет подходящие карточки, взаимодействует с AI и фильтрует по категории/роли",
+          "dependencies": ["card_manager", "embedding_service", "translation_ai", "cache_service", "error_handler", "monitoring_service"],
+          "events": ["match.found", "match.processed", "match.failed"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "negotiator_agent_a": {
+          "id": "negotiator_agent_a",
+          "file": "src/business/ai/negotiatorAgentA.py",
+          "start_tag": "# AGORA_BLOCK: start:negotiator_agent_a",
+          "end_tag": "# AGORA_BLOCK: end:negotiator_agent_a",
+          "description": "AI-переговорщик от компании A (внутренний или внешний)",
+          "dependencies": ["error_handler", "monitoring_service"],
+          "events": ["negotiation.message.a"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "negotiator_agent_b": {
+          "id": "negotiator_agent_b",
+          "file": "src/business/ai/negotiatorAgentB.py",
+          "start_tag": "# AGORA_BLOCK: start:negotiator_agent_b",
+          "end_tag": "# AGORA_BLOCK: end:negotiator_agent_b",
+          "description": "AI-переговорщик от компании B (внутренний или внешний)",
+          "dependencies": ["error_handler", "monitoring_service"],
+          "events": ["negotiation.message.b"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "gatekeeper_agent": {
+          "id": "gatekeeper_agent",
+          "file": "src/business/ai/gatekeeperAgent.py",
+          "start_tag": "# AGORA_BLOCK: start:gatekeeper_agent",
+          "end_tag": "# AGORA_BLOCK: end:gatekeeper_agent",
+          "description": "Агент-Вышибала: проверяет соответствие сообщений правилам",
+          "dependencies": ["error_handler", "monitoring_service"],
+          "events": ["gatekeeper.check", "gatekeeper.block"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "auditor_agent": {
+          "id": "auditor_agent",
+          "file": "src/business/ai/auditorAgent.py",
+          "start_tag": "# AGORA_BLOCK: start:auditor_agent",
+          "end_tag": "# AGORA_BLOCK: end:auditor_agent",
+          "description": "Агент-Аудитор: проверяет финальный договор на логические/юридические ошибки",
+          "dependencies": ["error_handler", "monitoring_service"],
+          "events": ["audit.completed", "audit.failed"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "negotiation_orchestrator": {
+          "id": "negotiation_orchestrator",
+          "file": "src/business/negotiationOrchestrator.py",
+          "start_tag": "# AGORA_BLOCK: start:negotiation_orchestrator",
+          "end_tag": "# AGORA_BLOCK: end:negotiation_orchestrator",
+          "description": "Оркестратор: управляет сценарием переговоров и вызывает нужных агентов",
+          "dependencies": ["negotiator_agent_a", "negotiator_agent_b", "gatekeeper_agent", "auditor_agent", "error_handler", "monitoring_service"],
+          "events": ["negotiation.started", "negotiation.completed", "negotiation.failed"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "contract_generator": {
+          "id": "contract_generator",
+          "file": "src/business/contractGenerator.py",
+          "start_tag": "# AGORA_BLOCK: start:contract_generator",
+          "end_tag": "# AGORA_BLOCK: end:contract_generator",
+          "description": "Генерация юридических документов с шаблонами и AI",
+          "dependencies": ["legal_ai", "translation_ai", "template_service", "error_handler", "monitoring_service"],
+          "events": ["contract.generated", "contract.signed", "contract.failed"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "reputation_system": {
+          "id": "reputation_system",
+          "file": "src/business/reputationSystem.py",
+          "start_tag": "# AGORA_BLOCK: start:reputation_system",
+          "end_tag": "# AGORA_BLOCK: end:reputation_system",
+          "description": "Система репутации и рейтингов компаний с AI-анализом",
+          "dependencies": ["kyc_verifier", "blockchain_integration", "cache_service", "error_handler", "monitoring_service"],
+          "events": ["reputation.updated", "reputation.reviewed"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "kyc_verifier": {
+          "id": "kyc_verifier",
+          "file": "src/business/kycVerifier.py",
+          "start_tag": "# AGORA_BLOCK: start:kyc_verifier",
+          "end_tag": "# AGORA_BLOCK: end:kyc_verifier",
+          "description": "Проверка KYC и верификация компаний с интеграцией сервисов",
+          "dependencies": ["error_handler", "monitoring_service"],
+          "events": ["kyc.started", "kyc.completed", "kyc.failed"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "logistics_finder": {
+          "id": "logistics_finder",
+          "file": "src/business/logisticsFinder.py",
+          "start_tag": "# AGORA_BLOCK: start:logistics_finder",
+          "end_tag": "# AGORA_BLOCK: end:logistics_finder",
+          "description": "Поиск логистических решений и перевозчиков с оптимизацией",
+          "dependencies": ["logistics_ai", "cache_service", "error_handler", "monitoring_service"],
+          "events": ["logistics.requested", "logistics.optimized"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "legal_ai": {
+          "id": "legal_ai",
+          "file": "src/business/legalAI.py",
+          "start_tag": "# AGORA_BLOCK: start:legal_ai",
+          "end_tag": "# AGORA_BLOCK: end:legal_ai",
+          "description": "AI-юрист для генерации шаблонов договоров по юрисдикциям",
+          "dependencies": ["translation_ai", "template_service", "error_handler", "monitoring_service"],
+          "events": ["legal.advice.requested", "legal.template.generated"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "logistics_ai": {
+          "id": "logistics_ai",
+          "file": "src/business/logisticsAI.py",
+          "start_tag": "# AGORA_BLOCK: start:logistics_ai",
+          "end_tag": "# AGORA_BLOCK: end:logistics_ai",
+          "description": "Анализ логистических маршрутов и узлов с AI-оптимизацией",
+          "dependencies": ["error_handler", "monitoring_service"],
+          "events": ["route.analyzed", "route.optimized"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "translation_ai": {
+          "id": "translation_ai",
+          "file": "src/business/translationAI.py",
+          "start_tag": "# AGORA_BLOCK: start:translation_ai",
+          "end_tag": "# AGORA_BLOCK: end:translation_ai",
+          "description": "Адаптация текстов под языки и бизнес-культуру с контекстом",
+          "dependencies": ["cache_service", "error_handler", "monitoring_service"],
+          "events": ["translation.requested", "translation.completed"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "risk_assessor_ai": {
+          "id": "risk_assessor_ai",
+          "file": "src/business/riskAssessorAI.py",
+          "start_tag": "# AGORA_BLOCK: start:risk_assessor_ai",
+          "end_tag": "# AGORA_BLOCK: end:risk_assessor_ai",
+          "description": "Проверка страновых и контрагентных рисков с AI-анализом",
+          "dependencies": ["error_handler", "monitoring_service"],
+          "events": ["risk.assessed", "risk.alert"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "embedding_service": {
+          "id": "embedding_service",
+          "file": "src/business/embeddingService.py",
+          "start_tag": "# AGORA_BLOCK: start:embedding_service",
+          "end_tag": "# AGORA_BLOCK: end:embedding_service",
+          "description": "Сервис для работы с embedding-векторами и семантическим поиском",
+          "dependencies": ["error_handler", "monitoring_service"],
+          "events": ["embedding.generated", "embedding.searched"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        }
+      }
+    },
+    "api_layer": {
+      "description": "API Layer (Gateway) - точки входа для фронтенда с валидацией",
+      "modules": {
+        "auth_login": {
+          "id": "auth_login",
+          "file": "src/api/auth.py",
+          "start_tag": "# AGORA_BLOCK: start:auth_login",
+          "end_tag": "# AGORA_BLOCK: end:auth_login",
+          "description": "Эндпоинт /auth/login с валидацией и безопасностью",
+          "dependencies": ["auth_module", "telegram_integration", "error_handler", "cache_service", "circuit_breaker"],
+          "methods": ["POST"],
+          "auth_required": false,
+          "rate_limit": "5/min",
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "profile_create": {
+          "id": "profile_create",
+          "file": "src/api/profile.py",
+          "start_tag": "# AGORA_BLOCK: start:profile_create",
+          "end_tag": "# AGORA_BLOCK: end:profile_create",
+          "description": "Эндпоинт /profile/create с валидацией данных",
+          "dependencies": ["company_profile_module", "profile_manager", "error_handler", "cache_service", "circuit_breaker"],
+          "methods": ["POST"],
+          "auth_required": true,
+          "rate_limit": "10/min",
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "match_swipe": {
+          "id": "match_swipe",
+          "file": "src/api/match.py",
+          "start_tag": "# AGORA_BLOCK: start:match_swipe",
+          "end_tag": "# AGORA_BLOCK: end:match_swipe",
+          "description": "Эндпоинт /match/swipe с обработкой в реальном времени",
+          "dependencies": ["swipe_cards_module", "match_engine", "error_handler", "cache_service", "circuit_breaker"],
+          "methods": ["POST"],
+          "auth_required": true,
+          "rate_limit": "30/min",
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "logistics_map": {
+          "id": "logistics_map",
+          "file": "src/api/logistics.py",
+          "start_tag": "# AGORA_BLOCK: start:logistics_map",
+          "end_tag": "# AGORA_BLOCK: end:logistics_map",
+          "description": "Эндпоинт /logistics/map с геоданными",
+          "dependencies": ["logistics_module", "logistics_ai", "error_handler", "cache_service", "circuit_breaker"],
+          "methods": ["GET", "POST"],
+          "auth_required": true,
+          "rate_limit": "20/min",
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "contract_generate": {
+          "id": "contract_generate",
+          "file": "src/api/contract.py",
+          "start_tag": "# AGORA_BLOCK: start:contract_generate",
+          "end_tag": "# AGORA_BLOCK: end:contract_generate",
+          "description": "Эндпоинт /contract/generate с шаблонами",
+          "dependencies": ["contract_module", "contract_generator", "error_handler", "cache_service", "circuit_breaker"],
+          "methods": ["POST"],
+          "auth_required": true,
+          "rate_limit": "10/min",
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "ai_negotiation": {
+          "id": "ai_negotiation",
+          "file": "src/api/ai.py",
+          "start_tag": "# AGORA_BLOCK: start:ai_negotiation",
+          "end_tag": "# AGORA_BLOCK: end:ai_negotiation",
+          "description": "Эндпоинт /ai/negotiation с контекстом",
+          "dependencies": ["chat_module", "negotiation_orchestrator", "error_handler", "cache_service", "circuit_breaker"],
+          "methods": ["POST", "GET"],
+          "auth_required": true,
+          "rate_limit": "15/min",
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "ai_legal_template": {
+          "id": "ai_legal_template",
+          "file": "src/api/ai.py",
+          "start_tag": "# AGORA_BLOCK: start:ai_legal_template",
+          "end_tag": "# AGORA_BLOCK: end:ai_legal_template",
+          "description": "Эндпоинт /ai/legal_template по юрисдикциям",
+          "dependencies": ["legal_ai", "error_handler", "cache_service", "circuit_breaker"],
+          "methods": ["POST"],
+          "auth_required": true,
+          "rate_limit": "10/min",
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "ai_translate": {
+          "id": "ai_translate",
+          "file": "src/api/ai.py",
+          "start_tag": "# AGORA_BLOCK: start:ai_translate",
+          "end_tag": "# AGORA_BLOCK: end:ai_translate",
+          "description": "Эндпоинт /ai/translate с контекстом",
+          "dependencies": ["translation_ai", "error_handler", "cache_service", "circuit_breaker"],
+          "methods": ["POST"],
+          "auth_required": true,
+          "rate_limit": "30/min",
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "ai_risk_check": {
+          "id": "ai_risk_check",
+          "file": "src/api/ai.py",
+          "start_tag": "# AGORA_BLOCK: start:ai_risk_check",
+          "end_tag": "# AGORA_BLOCK: end:ai_risk_check",
+          "description": "Эндпоинт /ai/risk_check с аналитикой",
+          "dependencies": ["risk_assessor_ai", "error_handler", "cache_service", "circuit_breaker"],
+          "methods": ["POST"],
+          "auth_required": true,
+          "rate_limit": "15/min",
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "ai_find_carrier": {
+          "id": "ai_find_carrier",
+          "file": "src/api/ai.py",
+          "start_tag": "# AGORA_BLOCK: start:ai_find_carrier",
+          "end_tag": "# AGORA_BLOCK: end:ai_find_carrier",
+          "description": "Эндпоинт /ai/find_carrier с фильтрацией",
+          "dependencies": ["logistics_ai", "error_handler", "cache_service", "circuit_breaker"],
+          "methods": ["POST"],
+          "auth_required": true,
+          "rate_limit": "20/min",
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "reputation_rating": {
+          "id": "reputation_rating",
+          "file": "src/api/reputation.py",
+          "start_tag": "# AGORA_BLOCK: start:reputation_rating",
+          "end_tag": "# AGORA_BLOCK: end:reputation_rating",
+          "description": "Эндпоинт /reputation/rating с историей",
+          "dependencies": ["reputation_system", "error_handler", "cache_service", "circuit_breaker"],
+          "methods": ["GET"],
+          "auth_required": false,
+          "rate_limit": "50/min",
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "blockchain_register_match": {
+          "id": "blockchain_register_match",
+          "file": "src/api/blockchain.py",
+          "start_tag": "# AGORA_BLOCK: start:blockchain_register_match",
+          "end_tag": "# AGORA_BLOCK: end:blockchain_register_match",
+          "description": "Эндпоинт /blockchain/register_match с гарантиями",
+          "dependencies": ["blockchain_integration", "error_handler", "cache_service", "circuit_breaker"],
+          "methods": ["POST"],
+          "auth_required": true,
+          "rate_limit": "10/min",
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        }
+      }
+    },
+    "integration_layer": {
+      "description": "Integration Layer - внешние интеграции и сервисы",
+      "modules": {
+        "telegram_integration": {
+          "id": "telegram_integration",
+          "file": "src/integrations/telegram/telegramIntegration.py",
+          "start_tag": "# AGORA_BLOCK: start:telegram_integration",
+          "end_tag": "# AGORA_BLOCK: end:telegram_integration",
+          "description": "Интеграция с Telegram API и Groups, обработка initData и управление сессиями",
+          "dependencies": ["error_handler", "monitoring_service"],
+          "events": ["telegram.message.received", "telegram.callback.received", "telegram.session.updated"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "cloudflare_integration": {
+          "id": "cloudflare_integration",
+          "file": "src/integrations/cloudflare/cloudflareIntegration.py",
+          "start_tag": "# AGORA_BLOCK: start:cloudflare_integration",
+          "end_tag": "# AGORA_BLOCK: end:cloudflare_integration",
+          "description": "Интеграция с Cloudflare Workers и Pages",
+          "dependencies": ["error_handler", "monitoring_service"],
+          "events": ["worker.request.received", "worker.response.sent"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "ai_providers": {
+          "id": "ai_providers",
+          "file": "src/integrations/ai/aiProviders.py",
+          "start_tag": "# AGORA_BLOCK: start:ai_providers",
+          "end_tag": "# AGORA_BLOCK: end:ai_providers",
+          "description": "Интеграция с AI-провайдерами (OpenAI, DeepSeek, Claude)",
+          "dependencies": ["error_handler", "monitoring_service"],
+          "events": ["ai.request.sent", "ai.response.received"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "external_apis": {
+          "id": "external_apis",
+          "file": "src/integrations/external/externalApis.py",
+          "start_tag": "# AGORA_BLOCK: start:external_apis",
+          "end_tag": "# AGORA_BLOCK: end:external_apis",
+          "description": "Интеграция с внешними API (KYC, логистика, платежи)",
+          "dependencies": ["error_handler", "monitoring_service"],
+          "events": ["external.api.requested", "external.api.responded"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "blockchain_integration": {
+          "id": "blockchain_integration",
+          "file": "src/integrations/blockchain/blockchainIntegration.py",
+          "start_tag": "# AGORA_BLOCK: start:blockchain_integration",
+          "end_tag": "# AGORA_BLOCK: end:blockchain_integration",
+          "description": "Интеграция с блокчейном (TON/Arweave) с гарантиями",
+          "dependencies": ["error_handler", "monitoring_service"],
+          "events": ["blockchain.transaction.sent", "blockchain.transaction.confirmed"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        }
+      }
+    },
+    "infrastructure_layer": {
+      "description": "Infrastructure Layer - инфраструктурные сервисы и утилиты",
+      "modules": {
+        "event_bus": {
+          "id": "event_bus",
+          "file": "src/infrastructure/events/eventBus.py",
+          "start_tag": "# AGORA_BLOCK: start:event_bus",
+          "end_tag": "# AGORA_BLOCK: end:event_bus",
+          "description": "Event Bus для межмодульного взаимодействия",
+          "dependencies": [],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "cache_service": {
+          "id": "cache_service",
+          "file": "src/infrastructure/cache/cacheService.py",
+          "start_tag": "# AGORA_BLOCK: start:cache_service",
+          "end_tag": "# AGORA_BLOCK: end:cache_service",
+          "description": "Сервис кэширования с Redis и стратегиями для разных типов данных",
+          "dependencies": ["event_bus"],
+          "events": ["cache.invalidated", "cache.cleared"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "translation_cache": {
+          "id": "translation_cache",
+          "file": "src/infrastructure/cache/strategies/translationCache.py",
+          "start_tag": "# AGORA_BLOCK: start:translation_cache",
+          "end_tag": "# AGORA_BLOCK: end:translation_cache",
+          "description": "Кэш переводов с TTL и языковыми ключами",
+          "dependencies": ["cache_service"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "embedding_cache": {
+          "id": "embedding_cache",
+          "file": "src/infrastructure/cache/strategies/embeddingCache.py",
+          "start_tag": "# AGORA_BLOCK: start:embedding_cache",
+          "end_tag": "# AGORA_BLOCK: end:embedding_cache",
+          "description": "Кэш векторов по ID и типу запроса",
+          "dependencies": ["cache_service"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "session_cache": {
+          "id": "session_cache",
+          "file": "src/infrastructure/cache/strategies/sessionCache.py",
+          "start_tag": "# AGORA_BLOCK: start:session_cache",
+          "end_tag": "# AGORA_BLOCK: end:session_cache",
+          "description": "Кэш пользовательских сессий (например, токенов)",
+          "dependencies": ["cache_service"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "storage_service": {
+          "id": "storage_service",
+          "file": "src/infrastructure/storage/storageService.py",
+          "start_tag": "# AGORA_BLOCK: start:storage_service",
+          "end_tag": "# AGORA_BLOCK: end:storage_service",
+          "description": "Сервис хранения файлов (S3, IPFS, Arweave)",
+          "dependencies": ["error_handler"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "monitoring_service": {
+          "id": "monitoring_service",
+          "file": "src/infrastructure/monitoring/monitoringService.py",
+          "start_tag": "# AGORA_BLOCK: start:monitoring_service",
+          "end_tag": "# AGORA_BLOCK: end:monitoring_service",
+          "description": "Сервис мониторинга и логирования",
+          "dependencies": ["event_bus"],
+          "events": ["metrics.recorded", "log.generated"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "config_service": {
+          "id": "config_service",
+          "file": "src/infrastructure/config/configService.py",
+          "start_tag": "# AGORA_BLOCK: start:config_service",
+          "end_tag": "# AGORA_BLOCK: end:config_service",
+          "description": "Сервис конфигурации и feature flags",
+          "dependencies": [],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "error_handler": {
+          "id": "error_handler",
+          "file": "src/infrastructure/error/errorHandler.py",
+          "start_tag": "# AGORA_BLOCK: start:error_handler",
+          "end_tag": "# AGORA_BLOCK: end:error_handler",
+          "description": "Централизованная обработка ошибок",
+          "dependencies": ["monitoring_service"],
+          "events": ["error.occurred", "error.handled"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "circuit_breaker": {
+          "id": "circuit_breaker",
+          "file": "src/infrastructure/circuit/circuitBreaker.py",
+          "start_tag": "# AGORA_BLOCK: start:circuit_breaker",
+          "end_tag": "# AGORA_BLOCK: end:circuit_breaker",
+          "description": "Circuit Breaker для отказоустойчивости",
+          "dependencies": ["monitoring_service"],
+          "events": ["circuit.opened", "circuit.closed"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "file_uploader": {
+          "id": "file_uploader",
+          "file": "src/services/fileUploader.ts",
+          "start_tag": "// AGORA_BLOCK: start:file_uploader",
+          "end_tag": "// AGORA_BLOCK: end:file_uploader",
+          "description": "Загрузка и обработка файлов",
+          "dependencies": ["storage_service", "error_handler"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "realtime_service": {
+          "id": "realtime_service",
+          "file": "src/services/realtimeService.ts",
+          "start_tag": "// AGORA_BLOCK: start:realtime_service",
+          "end_tag": "// AGORA_BLOCK: end:realtime_service",
+          "description": "Real-time коммуникации через WebSocket",
+          "dependencies": ["event_bus", "error_handler"],
+          "events": ["connection.established", "message.delivered"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "map_service": {
+          "id": "map_service",
+          "file": "src/services/mapService.ts",
+          "start_tag": "// AGORA_BLOCK: start:map_service",
+          "end_tag": "// AGORA_BLOCK: end:map_service",
+          "description": "Работа с картами и геоданными",
+          "dependencies": ["error_handler"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        }
+      }
+    },
+    "ci_cd": {
+      "description": "CI/CD Pipeline - GitHub Actions с заделом на ArgoCD",
+      "modules": {
+        "mvp_workflow": {
+          "id": "mvp_workflow",
+          "file": ".github/workflows/mvp.yml",
+          "start_tag": "# AGORA_BLOCK: start:mvp_workflow",
+          "end_tag": "# AGORA_BLOCK: end:mvp_workflow",
+          "description": "Базовый CI/CD pipeline для MVP с автоматическими тестами",
+          "dependencies": ["unit_tests", "integration_tests", "e2e_tests"],
+          "stages": ["test", "build", "deploy-staging", "deploy-production"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        }
+      }
+    },
+    "config": {
+      "description": "Environment Management - MVP с подготовкой к Vault",
+      "modules": {
+        "secret_manager": {
+          "id": "secret_manager",
+          "file": "src/core/config/secrets.ts",
+          "start_tag": "// AGORA_BLOCK: start:secret_manager",
+          "end_tag": "// AGORA_BLOCK: end:secret_manager",
+          "description": "Управление секретами с заделом на Vault",
+          "dependencies": [],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        }
+      }
+    },
+    "database": {
+      "description": "Database Strategy - PostgreSQL + Redis с партиционированием",
+      "modules": {
+        "initial_schema": {
+          "id": "initial_schema",
+          "file": "migrations/001_initial_schema.sql",
+          "start_tag": "-- AGORA_BLOCK: start:initial_schema",
+          "end_tag": "-- AGORA_BLOCK: end:initial_schema",
+          "description": "Начальная схема БД для MVP",
+          "dependencies": [],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        }
+      }
+    },
+    "monitoring": {
+      "description": "Monitoring Stack - Prometheus + Grafana с заделом на Jaeger",
+      "modules": {
+        "agora_metrics": {
+          "id": "agora_metrics",
+          "file": "backend/src/core/monitoring.py",
+          "start_tag": "# AGORA_BLOCK: start:agora_metrics",
+          "end_tag": "# AGORA_BLOCK: end:agora_metrics",
+          "description": "Бизнес-метрики для MVP",
+          "dependencies": [],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        }
+      }
+    },
+    "testing": {
+      "description": "Testing Strategy - Unit + Integration + E2E с оптимизацией CI/CD",
+      "modules": {
+        "unit_tests": {
+          "id": "unit_tests",
+          "file": "tests/unit/testSuite.py",
+          "start_tag": "# AGORA_BLOCK: start:unit_tests",
+          "end_tag": "# AGORA_BLOCK: end:unit_tests",
+          "description": "Unit-тесты для бизнес-логики",
+          "dependencies": [],
+          "coverage": "85%",
+          "conditional": true,
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "integration_tests": {
+          "id": "integration_tests",
+          "file": "tests/integration/testSuite.py",
+          "start_tag": "# AGORA_BLOCK: start:integration_tests",
+          "end_tag": "# AGORA_BLOCK: end:integration_tests",
+          "description": "Интеграционные тесты для API",
+          "dependencies": [],
+          "coverage": "70%",
+          "conditional": true,
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "e2e_tests": {
+          "id": "e2e_tests",
+          "file": "tests/e2e/testSuite.py",
+          "start_tag": "# AGORA_BLOCK: start:e2e_tests",
+          "end_tag": "# AGORA_BLOCK: end:e2e_tests",
+          "description": "E2E-тесты для пользовательских сценариев",
+          "dependencies": [],
+          "coverage": "60%",
+          "conditional": true,
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "performance_tests": {
+          "id": "performance_tests",
+          "file": "tests/performance/testSuite.py",
+          "start_tag": "# AGORA_BLOCK: start:performance_tests",
+          "end_tag": "# AGORA_BLOCK: end:performance_tests",
+          "description": "Базовые тесты нагрузки для MVP",
+          "dependencies": [],
+          "conditional": false,
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        }
+      }
+    }
+  }
+}
