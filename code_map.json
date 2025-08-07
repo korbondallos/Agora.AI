@@ -315,6 +315,17 @@
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
         },
+"test_block": {
+  "id": "test_block",
+  "file": "src/test/test_file.py",
+  "start_tag": "# AGORA_BLOCK: start:test_block",
+  "end_tag": "# AGORA_BLOCK: end:test_block",
+  "description": "Тестовый блок для проверки утилит",
+  "dependencies": [],
+  "author": "AI_Assistant",
+  "version": "1.0.0",
+  "last_modified": "2023-11-15T00:00:00Z"
+},        
         "embedding_service": {
           "id": "embedding_service",
           "file": "src/business/embeddingService.py",
