@@ -30,7 +30,7 @@ def test_code_utils():
 
 def new_function():
     print("This is a new function!")
-    return "new_success""""
+    return "new_success"  # Исправлено: только одна кавычка в конце"""
     
     try:
         result = manager.replace_block("test_block", new_code)
