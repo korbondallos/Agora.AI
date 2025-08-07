@@ -47,6 +47,27 @@ def clean_code(code):
     # Объединяем с правильными переносами строк
     return '\n'.join(cleaned_lines)
 
+def find_block_by_tag(tag_name):
+    """Найти блок по тегу"""
+    manager = CodeBlockManager()
+    
+    # Поддерживаем оба формата: с префиксом и без
+    possible_tags = [
+        f"# AGORA_BLOCK: start:{tag_name}",
+        tag_name if tag_name.startswith("# AGORA_BLOCK: start:") else None
+    ]
+    
+    for full_tag in possible_tags:
+        if full_tag is None:
+            continue
+            
+        for layer_name, layer in manager.code_map['layers'].items():
+            for block_id, block_info in layer['modules'].items():
+                if block_info['start_tag'] == full_tag:
+                    return block_id
+    
+    return None
+
 def read_code_from_file(file_path):
     """Чтение кода из файла"""
     try:
@@ -118,46 +139,59 @@ def update_block(block_id, new_code, no_commit=False, confirm=False, dry_run=Fal
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Утилита для обновления блоков кода",
+        description="Утилита для обновления блоков кода по тегам",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Примеры использования:
-  # Из командной строки (для короткого кода)
-  python src/utils/update_code.py block_id "print('hello')"
+  # По тегу (рекомендуется)
+  python src/utils/update_code.py --tag monitoring_service --clipboard
+  python src/utils/update_code.py -t telegram_integration --file code.txt
 
-  # Из файла
-  python src/utils/update_code.py block_id --file code.txt
-
-  # Из буфера обмена
+  # По ID (старый способ)
   python src/utils/update_code.py block_id --clipboard
 
-  # Интерактивный режим
-  python src/utils/update_code.py block_id --interactive
+  # Другие опции
+  python src/utils/update_code.py --tag monitoring_service --interactive --confirm
+  python src/utils/update_code.py --tag monitoring_service --file code.txt --dry-run
 
-  # Без автоматического коммита
-  python src/utils/update_code.py block_id --file code.txt --no-commit
-
-  # С подтверждением
-  python src/utils/update_code.py block_id --file code.txt --confirm
-
-  # Тестовый запуск (без реальных изменений)
-  python src/utils/update_code.py block_id --file code.txt --dry-run
+Поддерживаемые форматы тегов:
+  - Короткий: monitoring_service
+  - Полный: "# AGORA_BLOCK: start:monitoring_service"
         """
     )
     
-    parser.add_argument('block_id', help='ID блока для обновления')
+    # Группа для идентификации блока (ID или тег)
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument('block_id', nargs='?', help='ID блока для обновления (старый способ)')
+    group.add_argument('--tag', '-t', help='Тег блока (рекомендуется)')
     
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument('--code', help='Код для замены (для короткого кода)')
-    group.add_argument('--file', '-f', help='Файл с кодом для замены')
-    group.add_argument('--clipboard', '-c', action='store_true', help='Взять код из буфера обмена')
-    group.add_argument('--interactive', '-i', action='store_true', help='Интерактивный ввод кода')
+    # Группа для источника кода
+    source_group = parser.add_mutually_exclusive_group()
+    source_group.add_argument('--code', help='Код для замены (для короткого кода)')
+    source_group.add_argument('--file', '-f', help='Файл с кодом для замены')
+    source_group.add_argument('--clipboard', '-c', action='store_true', help='Взять код из буфера обмена')
+    source_group.add_argument('--interactive', '-i', action='store_true', help='Интерактивный ввод кода')
     
+    # Опции управления
     parser.add_argument('--no-commit', action='store_true', help='Не делать автоматический коммит')
     parser.add_argument('--confirm', action='store_true', help='Запросить подтверждение перед обновлением')
     parser.add_argument('--dry-run', action='store_true', help='Тестовый запуск без реальных изменений')
     
     args = parser.parse_args()
+    
+    # Определяем блок для обновления
+    block_id = None
+    
+    if args.tag:
+        # Ищем блок по тегу
+        block_id = find_block_by_tag(args.tag)
+        if not block_id:
+            print(f"Ошибка: Блок с тегом '{args.tag}' не найден")
+            print("Проверьте правильность тега или используйте список доступных тегов")
+            sys.exit(1)
+        print(f"Найден блок: {block_id} (по тегу: {args.tag})")
+    else:
+        block_id = args.block_id
     
     # Определяем источник кода
     new_code = None
@@ -169,24 +203,24 @@ def main():
     elif args.clipboard:
         new_code = read_code_from_clipboard()
         if new_code:
-            print(f"Код из буфера обмена ({len(new_code)} символов) - очищен от лишних пустых строк")
+            print(f"Код из буфера обмена ({len(new_code)} символов) - очищен")
     elif args.interactive:
         new_code = read_code_interactive()
     else:
-        # Если не указан источник, пробуем буфер обмена
+        # По умолчанию пробуем буфер обмена
         new_code = read_code_from_clipboard()
         if not new_code:
             print("Не удалось получить код из буфера обмена, используйте --file, --interactive или --code")
             sys.exit(1)
         else:
-            print(f"Код из буфера обмена ({len(new_code)} символов) - очищен от лишних пустых строк")
+            print(f"Код из буфера обмена ({len(new_code)} символов) - очищен")
     
     if not new_code:
         print("Не удалось получить код для замены")
         sys.exit(1)
     
     # Обновляем блок
-    success = update_block(args.block_id, new_code, args.no_commit, args.confirm, args.dry_run)
+    success = update_block(block_id, new_code, args.no_commit, args.confirm, args.dry_run)
     
     if success:
         print("Готово!")
