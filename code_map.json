@@ -684,6 +684,28 @@
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
         },
+        "code_utils": {
+          "id": "code_utils",
+          "file": "src/utils/code_utils.py",
+          "start_tag": "# AGORA_BLOCK: start:code_utils",
+          "end_tag": "# AGORA_BLOCK: end:code_utils",
+          "description": "Утилиты для работы с тегированными блоками кода",
+          "dependencies": [],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
+        "git_integration": {
+          "id": "git_integration",
+          "file": "src/utils/git_integration.py",
+          "start_tag": "# AGORA_BLOCK: start:git_integration",
+          "end_tag": "# AGORA_BLOCK: end:git_integration",
+          "description": "Интеграция с Git для автоматического коммита изменений",
+          "dependencies": ["code_utils"],
+          "author": "AI_Assistant",
+          "version": "1.0.0",
+          "last_modified": "2023-11-15T00:00:00Z"
+        },
         "file_uploader": {
           "id": "file_uploader",
           "file": "src/services/fileUploader.ts",
