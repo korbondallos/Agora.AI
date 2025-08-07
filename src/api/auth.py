@@ -6,10 +6,9 @@ from typing import Dict, Any
 import jwt
 import datetime
 import os
-
-from integrations.telegram.telegramIntegration import telegram_integration
-from infrastructure.error.errorHandler import ErrorHandler
-from infrastructure.monitoring.monitoringService import monitoring_service
+from src.integrations.telegram.telegramIntegration import telegram_integration
+from src.infrastructure.error.errorHandler import ErrorHandler
+from src.infrastructure.monitoring.monitoringService import monitoring_service
 
 router = APIRouter()
 security = HTTPBearer()

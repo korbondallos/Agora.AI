@@ -537,8 +537,8 @@
           "description": "Тестовый блок для проверки утилит",
           "dependencies": [],
           "author": "AI_Assistant",
-          "version": "1.0.1",
-          "last_modified": "2025-08-07T15:02:58.430765"
+          "version": "1.0.2",
+          "last_modified": "2025-08-07T18:15:03.893057"
         },
         "embedding_service": {
           "id": "embedding_service",

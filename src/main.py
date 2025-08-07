@@ -3,10 +3,9 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import time
-
-from api.auth import router as auth_router
-from infrastructure.monitoring.monitoringService import monitoring_service
-from infrastructure.error.errorHandler import ErrorHandler
+from src.api.auth import router as auth_router
+from src.infrastructure.monitoring.monitoringService import monitoring_service
+from src.infrastructure.error.errorHandler import ErrorHandler
 
 # Создание приложения FastAPI
 app = FastAPI(

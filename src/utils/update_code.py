@@ -1,5 +1,12 @@
-from utils.code_utils import CodeBlockManager
-from utils.git_integration import GitIntegration
+# AGORA_BLOCK: start:update_code
+import sys
+import os
+
+# Добавляем корневую директорию проекта в sys.path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+
+from src.utils.code_utils import CodeBlockManager
+from src.utils.git_integration import GitIntegration
 
 def update_block(block_id, new_code):
     manager = CodeBlockManager()
@@ -21,3 +28,4 @@ if __name__ == "__main__":
     new_code = sys.argv[2]
     
     update_block(block_id, new_code)
+# AGORA_BLOCK: end:update_code
