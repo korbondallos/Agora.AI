@@ -21,9 +21,20 @@
           "start_tag": "// AGORA_BLOCK: start:auth_module",
           "end_tag": "// AGORA_BLOCK: end:auth_module",
           "description": "Авторизация через Telegram и в будущем через email/web",
-          "dependencies": ["api_service", "error_handler", "telegram_integration"],
-          "platforms": ["telegram", "web", "ios"],
-          "events": ["auth.success", "auth.failed"],
+          "dependencies": [
+            "api_service",
+            "error_handler",
+            "telegram_integration"
+          ],
+          "platforms": [
+            "telegram",
+            "web",
+            "ios"
+          ],
+          "events": [
+            "auth.success",
+            "auth.failed"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -34,9 +45,21 @@
           "start_tag": "// AGORA_BLOCK: start:company_profile_module",
           "end_tag": "// AGORA_BLOCK: end:company_profile_module",
           "description": "UI-модуль для редактирования профиля компании",
-          "dependencies": ["api_service", "file_uploader", "error_handler", "profile_manager"],
-          "platforms": ["telegram", "web", "ios"],
-          "events": ["profile.updated", "profile.created"],
+          "dependencies": [
+            "api_service",
+            "file_uploader",
+            "error_handler",
+            "profile_manager"
+          ],
+          "platforms": [
+            "telegram",
+            "web",
+            "ios"
+          ],
+          "events": [
+            "profile.updated",
+            "profile.created"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -47,9 +70,23 @@
           "start_tag": "// AGORA_BLOCK: start:swipe_cards_module",
           "end_tag": "// AGORA_BLOCK: end:swipe_cards_module",
           "description": "Основная лента свайпов (Tinder-like интерфейс) с анимациями",
-          "dependencies": ["api_service", "match_engine", "cache_service", "error_handler", "card_manager"],
-          "platforms": ["telegram", "web", "ios"],
-          "events": ["swipe.performed", "match.found", "match.processed"],
+          "dependencies": [
+            "api_service",
+            "match_engine",
+            "cache_service",
+            "error_handler",
+            "card_manager"
+          ],
+          "platforms": [
+            "telegram",
+            "web",
+            "ios"
+          ],
+          "events": [
+            "swipe.performed",
+            "match.found",
+            "match.processed"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -60,9 +97,21 @@
           "start_tag": "// AGORA_BLOCK: start:logistics_module",
           "end_tag": "// AGORA_BLOCK: end:logistics_module",
           "description": "Карта логистики и визуализация маршрутов с интерактивными элементами",
-          "dependencies": ["api_service", "logistics_ai", "map_service", "error_handler"],
-          "platforms": ["telegram", "web", "ios"],
-          "events": ["route.optimized", "route.selected"],
+          "dependencies": [
+            "api_service",
+            "logistics_ai",
+            "map_service",
+            "error_handler"
+          ],
+          "platforms": [
+            "telegram",
+            "web",
+            "ios"
+          ],
+          "events": [
+            "route.optimized",
+            "route.selected"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -73,9 +122,22 @@
           "start_tag": "// AGORA_BLOCK: start:chat_module",
           "end_tag": "// AGORA_BLOCK: end:chat_module",
           "description": "Чат-переговоры между компаниями с поддержкой медиа и документов",
-          "dependencies": ["api_service", "negotiation_orchestrator", "realtime_service", "error_handler"],
-          "platforms": ["telegram", "web", "ios"],
-          "events": ["message.sent", "message.received", "negotiation.updated"],
+          "dependencies": [
+            "api_service",
+            "negotiation_orchestrator",
+            "realtime_service",
+            "error_handler"
+          ],
+          "platforms": [
+            "telegram",
+            "web",
+            "ios"
+          ],
+          "events": [
+            "message.sent",
+            "message.received",
+            "negotiation.updated"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -86,9 +148,22 @@
           "start_tag": "// AGORA_BLOCK: start:contract_module",
           "end_tag": "// AGORA_BLOCK: end:contract_module",
           "description": "Генерация и подписание договоров с электронной подписью",
-          "dependencies": ["api_service", "contract_generator", "blockchain_integration", "esign_service", "error_handler"],
-          "platforms": ["telegram", "web", "ios"],
-          "events": ["contract.generated", "contract.signed"],
+          "dependencies": [
+            "api_service",
+            "contract_generator",
+            "blockchain_integration",
+            "esign_service",
+            "error_handler"
+          ],
+          "platforms": [
+            "telegram",
+            "web",
+            "ios"
+          ],
+          "events": [
+            "contract.generated",
+            "contract.signed"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -99,9 +174,21 @@
           "start_tag": "// AGORA_BLOCK: start:settings_module",
           "end_tag": "// AGORA_BLOCK: end:settings_module",
           "description": "Настройки языка, уведомлений и профиля с темой",
-          "dependencies": ["api_service", "translation_ai", "storage_service", "error_handler"],
-          "platforms": ["telegram", "web", "ios"],
-          "events": ["settings.updated", "language.changed"],
+          "dependencies": [
+            "api_service",
+            "translation_ai",
+            "storage_service",
+            "error_handler"
+          ],
+          "platforms": [
+            "telegram",
+            "web",
+            "ios"
+          ],
+          "events": [
+            "settings.updated",
+            "language.changed"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -117,8 +204,15 @@
           "start_tag": "# AGORA_BLOCK: start:profile_manager",
           "end_tag": "# AGORA_BLOCK: end:profile_manager",
           "description": "Статическая информация о компании, которую заполняет и обновляет пользователь",
-          "dependencies": ["error_handler", "monitoring_service", "kyc_verifier"],
-          "events": ["profile.updated", "profile.verified"],
+          "dependencies": [
+            "error_handler",
+            "monitoring_service",
+            "kyc_verifier"
+          ],
+          "events": [
+            "profile.updated",
+            "profile.verified"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -129,8 +223,17 @@
           "start_tag": "# AGORA_BLOCK: start:card_manager",
           "end_tag": "# AGORA_BLOCK: end:card_manager",
           "description": "Динамические карточки, создаваемые под конкретный товар/услугу и категорию",
-          "dependencies": ["profile_manager", "product_catalog", "error_handler", "monitoring_service"],
-          "events": ["card.created", "card.updated", "card.archived"],
+          "dependencies": [
+            "profile_manager",
+            "product_catalog",
+            "error_handler",
+            "monitoring_service"
+          ],
+          "events": [
+            "card.created",
+            "card.updated",
+            "card.archived"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -141,8 +244,14 @@
           "start_tag": "# AGORA_BLOCK: start:product_catalog",
           "end_tag": "# AGORA_BLOCK: end:product_catalog",
           "description": "Каталог товаров компании с категориями и характеристиками",
-          "dependencies": ["error_handler", "monitoring_service"],
-          "events": ["product.added", "product.updated"],
+          "dependencies": [
+            "error_handler",
+            "monitoring_service"
+          ],
+          "events": [
+            "product.added",
+            "product.updated"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -153,8 +262,19 @@
           "start_tag": "# AGORA_BLOCK: start:match_engine",
           "end_tag": "# AGORA_BLOCK: end:match_engine",
           "description": "Ищет подходящие карточки, взаимодействует с AI и фильтрует по категории/роли",
-          "dependencies": ["card_manager", "embedding_service", "translation_ai", "cache_service", "error_handler", "monitoring_service"],
-          "events": ["match.found", "match.processed", "match.failed"],
+          "dependencies": [
+            "card_manager",
+            "embedding_service",
+            "translation_ai",
+            "cache_service",
+            "error_handler",
+            "monitoring_service"
+          ],
+          "events": [
+            "match.found",
+            "match.processed",
+            "match.failed"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -165,8 +285,13 @@
           "start_tag": "# AGORA_BLOCK: start:negotiator_agent_a",
           "end_tag": "# AGORA_BLOCK: end:negotiator_agent_a",
           "description": "AI-переговорщик от компании A (внутренний или внешний)",
-          "dependencies": ["error_handler", "monitoring_service"],
-          "events": ["negotiation.message.a"],
+          "dependencies": [
+            "error_handler",
+            "monitoring_service"
+          ],
+          "events": [
+            "negotiation.message.a"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -177,8 +302,13 @@
           "start_tag": "# AGORA_BLOCK: start:negotiator_agent_b",
           "end_tag": "# AGORA_BLOCK: end:negotiator_agent_b",
           "description": "AI-переговорщик от компании B (внутренний или внешний)",
-          "dependencies": ["error_handler", "monitoring_service"],
-          "events": ["negotiation.message.b"],
+          "dependencies": [
+            "error_handler",
+            "monitoring_service"
+          ],
+          "events": [
+            "negotiation.message.b"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -189,8 +319,14 @@
           "start_tag": "# AGORA_BLOCK: start:gatekeeper_agent",
           "end_tag": "# AGORA_BLOCK: end:gatekeeper_agent",
           "description": "Агент-Вышибала: проверяет соответствие сообщений правилам",
-          "dependencies": ["error_handler", "monitoring_service"],
-          "events": ["gatekeeper.check", "gatekeeper.block"],
+          "dependencies": [
+            "error_handler",
+            "monitoring_service"
+          ],
+          "events": [
+            "gatekeeper.check",
+            "gatekeeper.block"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -201,8 +337,14 @@
           "start_tag": "# AGORA_BLOCK: start:auditor_agent",
           "end_tag": "# AGORA_BLOCK: end:auditor_agent",
           "description": "Агент-Аудитор: проверяет финальный договор на логические/юридические ошибки",
-          "dependencies": ["error_handler", "monitoring_service"],
-          "events": ["audit.completed", "audit.failed"],
+          "dependencies": [
+            "error_handler",
+            "monitoring_service"
+          ],
+          "events": [
+            "audit.completed",
+            "audit.failed"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -213,8 +355,19 @@
           "start_tag": "# AGORA_BLOCK: start:negotiation_orchestrator",
           "end_tag": "# AGORA_BLOCK: end:negotiation_orchestrator",
           "description": "Оркестратор: управляет сценарием переговоров и вызывает нужных агентов",
-          "dependencies": ["negotiator_agent_a", "negotiator_agent_b", "gatekeeper_agent", "auditor_agent", "error_handler", "monitoring_service"],
-          "events": ["negotiation.started", "negotiation.completed", "negotiation.failed"],
+          "dependencies": [
+            "negotiator_agent_a",
+            "negotiator_agent_b",
+            "gatekeeper_agent",
+            "auditor_agent",
+            "error_handler",
+            "monitoring_service"
+          ],
+          "events": [
+            "negotiation.started",
+            "negotiation.completed",
+            "negotiation.failed"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -225,8 +378,18 @@
           "start_tag": "# AGORA_BLOCK: start:contract_generator",
           "end_tag": "# AGORA_BLOCK: end:contract_generator",
           "description": "Генерация юридических документов с шаблонами и AI",
-          "dependencies": ["legal_ai", "translation_ai", "template_service", "error_handler", "monitoring_service"],
-          "events": ["contract.generated", "contract.signed", "contract.failed"],
+          "dependencies": [
+            "legal_ai",
+            "translation_ai",
+            "template_service",
+            "error_handler",
+            "monitoring_service"
+          ],
+          "events": [
+            "contract.generated",
+            "contract.signed",
+            "contract.failed"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -237,8 +400,17 @@
           "start_tag": "# AGORA_BLOCK: start:reputation_system",
           "end_tag": "# AGORA_BLOCK: end:reputation_system",
           "description": "Система репутации и рейтингов компаний с AI-анализом",
-          "dependencies": ["kyc_verifier", "blockchain_integration", "cache_service", "error_handler", "monitoring_service"],
-          "events": ["reputation.updated", "reputation.reviewed"],
+          "dependencies": [
+            "kyc_verifier",
+            "blockchain_integration",
+            "cache_service",
+            "error_handler",
+            "monitoring_service"
+          ],
+          "events": [
+            "reputation.updated",
+            "reputation.reviewed"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -249,8 +421,15 @@
           "start_tag": "# AGORA_BLOCK: start:kyc_verifier",
           "end_tag": "# AGORA_BLOCK: end:kyc_verifier",
           "description": "Проверка KYC и верификация компаний с интеграцией сервисов",
-          "dependencies": ["error_handler", "monitoring_service"],
-          "events": ["kyc.started", "kyc.completed", "kyc.failed"],
+          "dependencies": [
+            "error_handler",
+            "monitoring_service"
+          ],
+          "events": [
+            "kyc.started",
+            "kyc.completed",
+            "kyc.failed"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -261,8 +440,16 @@
           "start_tag": "# AGORA_BLOCK: start:logistics_finder",
           "end_tag": "# AGORA_BLOCK: end:logistics_finder",
           "description": "Поиск логистических решений и перевозчиков с оптимизацией",
-          "dependencies": ["logistics_ai", "cache_service", "error_handler", "monitoring_service"],
-          "events": ["logistics.requested", "logistics.optimized"],
+          "dependencies": [
+            "logistics_ai",
+            "cache_service",
+            "error_handler",
+            "monitoring_service"
+          ],
+          "events": [
+            "logistics.requested",
+            "logistics.optimized"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -273,8 +460,16 @@
           "start_tag": "# AGORA_BLOCK: start:legal_ai",
           "end_tag": "# AGORA_BLOCK: end:legal_ai",
           "description": "AI-юрист для генерации шаблонов договоров по юрисдикциям",
-          "dependencies": ["translation_ai", "template_service", "error_handler", "monitoring_service"],
-          "events": ["legal.advice.requested", "legal.template.generated"],
+          "dependencies": [
+            "translation_ai",
+            "template_service",
+            "error_handler",
+            "monitoring_service"
+          ],
+          "events": [
+            "legal.advice.requested",
+            "legal.template.generated"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -285,8 +480,14 @@
           "start_tag": "# AGORA_BLOCK: start:logistics_ai",
           "end_tag": "# AGORA_BLOCK: end:logistics_ai",
           "description": "Анализ логистических маршрутов и узлов с AI-оптимизацией",
-          "dependencies": ["error_handler", "monitoring_service"],
-          "events": ["route.analyzed", "route.optimized"],
+          "dependencies": [
+            "error_handler",
+            "monitoring_service"
+          ],
+          "events": [
+            "route.analyzed",
+            "route.optimized"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -297,8 +498,15 @@
           "start_tag": "# AGORA_BLOCK: start:translation_ai",
           "end_tag": "# AGORA_BLOCK: end:translation_ai",
           "description": "Адаптация текстов под языки и бизнес-культуру с контекстом",
-          "dependencies": ["cache_service", "error_handler", "monitoring_service"],
-          "events": ["translation.requested", "translation.completed"],
+          "dependencies": [
+            "cache_service",
+            "error_handler",
+            "monitoring_service"
+          ],
+          "events": [
+            "translation.requested",
+            "translation.completed"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -309,31 +517,43 @@
           "start_tag": "# AGORA_BLOCK: start:risk_assessor_ai",
           "end_tag": "# AGORA_BLOCK: end:risk_assessor_ai",
           "description": "Проверка страновых и контрагентных рисков с AI-анализом",
-          "dependencies": ["error_handler", "monitoring_service"],
-          "events": ["risk.assessed", "risk.alert"],
+          "dependencies": [
+            "error_handler",
+            "monitoring_service"
+          ],
+          "events": [
+            "risk.assessed",
+            "risk.alert"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
         },
-"test_block": {
-  "id": "test_block",
-  "file": "src/test/test_file.py",
-  "start_tag": "# AGORA_BLOCK: start:test_block",
-  "end_tag": "# AGORA_BLOCK: end:test_block",
-  "description": "Тестовый блок для проверки утилит",
-  "dependencies": [],
-  "author": "AI_Assistant",
-  "version": "1.0.0",
-  "last_modified": "2023-11-15T00:00:00Z"
-},        
+        "test_block": {
+          "id": "test_block",
+          "file": "src/test/test_file.py",
+          "start_tag": "# AGORA_BLOCK: start:test_block",
+          "end_tag": "# AGORA_BLOCK: end:test_block",
+          "description": "Тестовый блок для проверки утилит",
+          "dependencies": [],
+          "author": "AI_Assistant",
+          "version": "1.0.1",
+          "last_modified": "2025-08-07T15:02:58.430765"
+        },
         "embedding_service": {
           "id": "embedding_service",
           "file": "src/business/embeddingService.py",
           "start_tag": "# AGORA_BLOCK: start:embedding_service",
           "end_tag": "# AGORA_BLOCK: end:embedding_service",
           "description": "Сервис для работы с embedding-векторами и семантическим поиском",
-          "dependencies": ["error_handler", "monitoring_service"],
-          "events": ["embedding.generated", "embedding.searched"],
+          "dependencies": [
+            "error_handler",
+            "monitoring_service"
+          ],
+          "events": [
+            "embedding.generated",
+            "embedding.searched"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -349,8 +569,16 @@
           "start_tag": "# AGORA_BLOCK: start:auth_login",
           "end_tag": "# AGORA_BLOCK: end:auth_login",
           "description": "Эндпоинт /auth/login с валидацией и безопасностью",
-          "dependencies": ["auth_module", "telegram_integration", "error_handler", "cache_service", "circuit_breaker"],
-          "methods": ["POST"],
+          "dependencies": [
+            "auth_module",
+            "telegram_integration",
+            "error_handler",
+            "cache_service",
+            "circuit_breaker"
+          ],
+          "methods": [
+            "POST"
+          ],
           "auth_required": false,
           "rate_limit": "5/min",
           "author": "AI_Assistant",
@@ -363,8 +591,16 @@
           "start_tag": "# AGORA_BLOCK: start:profile_create",
           "end_tag": "# AGORA_BLOCK: end:profile_create",
           "description": "Эндпоинт /profile/create с валидацией данных",
-          "dependencies": ["company_profile_module", "profile_manager", "error_handler", "cache_service", "circuit_breaker"],
-          "methods": ["POST"],
+          "dependencies": [
+            "company_profile_module",
+            "profile_manager",
+            "error_handler",
+            "cache_service",
+            "circuit_breaker"
+          ],
+          "methods": [
+            "POST"
+          ],
           "auth_required": true,
           "rate_limit": "10/min",
           "author": "AI_Assistant",
@@ -377,8 +613,16 @@
           "start_tag": "# AGORA_BLOCK: start:match_swipe",
           "end_tag": "# AGORA_BLOCK: end:match_swipe",
           "description": "Эндпоинт /match/swipe с обработкой в реальном времени",
-          "dependencies": ["swipe_cards_module", "match_engine", "error_handler", "cache_service", "circuit_breaker"],
-          "methods": ["POST"],
+          "dependencies": [
+            "swipe_cards_module",
+            "match_engine",
+            "error_handler",
+            "cache_service",
+            "circuit_breaker"
+          ],
+          "methods": [
+            "POST"
+          ],
           "auth_required": true,
           "rate_limit": "30/min",
           "author": "AI_Assistant",
@@ -391,8 +635,17 @@
           "start_tag": "# AGORA_BLOCK: start:logistics_map",
           "end_tag": "# AGORA_BLOCK: end:logistics_map",
           "description": "Эндпоинт /logistics/map с геоданными",
-          "dependencies": ["logistics_module", "logistics_ai", "error_handler", "cache_service", "circuit_breaker"],
-          "methods": ["GET", "POST"],
+          "dependencies": [
+            "logistics_module",
+            "logistics_ai",
+            "error_handler",
+            "cache_service",
+            "circuit_breaker"
+          ],
+          "methods": [
+            "GET",
+            "POST"
+          ],
           "auth_required": true,
           "rate_limit": "20/min",
           "author": "AI_Assistant",
@@ -405,8 +658,16 @@
           "start_tag": "# AGORA_BLOCK: start:contract_generate",
           "end_tag": "# AGORA_BLOCK: end:contract_generate",
           "description": "Эндпоинт /contract/generate с шаблонами",
-          "dependencies": ["contract_module", "contract_generator", "error_handler", "cache_service", "circuit_breaker"],
-          "methods": ["POST"],
+          "dependencies": [
+            "contract_module",
+            "contract_generator",
+            "error_handler",
+            "cache_service",
+            "circuit_breaker"
+          ],
+          "methods": [
+            "POST"
+          ],
           "auth_required": true,
           "rate_limit": "10/min",
           "author": "AI_Assistant",
@@ -419,8 +680,17 @@
           "start_tag": "# AGORA_BLOCK: start:ai_negotiation",
           "end_tag": "# AGORA_BLOCK: end:ai_negotiation",
           "description": "Эндпоинт /ai/negotiation с контекстом",
-          "dependencies": ["chat_module", "negotiation_orchestrator", "error_handler", "cache_service", "circuit_breaker"],
-          "methods": ["POST", "GET"],
+          "dependencies": [
+            "chat_module",
+            "negotiation_orchestrator",
+            "error_handler",
+            "cache_service",
+            "circuit_breaker"
+          ],
+          "methods": [
+            "POST",
+            "GET"
+          ],
           "auth_required": true,
           "rate_limit": "15/min",
           "author": "AI_Assistant",
@@ -433,8 +703,15 @@
           "start_tag": "# AGORA_BLOCK: start:ai_legal_template",
           "end_tag": "# AGORA_BLOCK: end:ai_legal_template",
           "description": "Эндпоинт /ai/legal_template по юрисдикциям",
-          "dependencies": ["legal_ai", "error_handler", "cache_service", "circuit_breaker"],
-          "methods": ["POST"],
+          "dependencies": [
+            "legal_ai",
+            "error_handler",
+            "cache_service",
+            "circuit_breaker"
+          ],
+          "methods": [
+            "POST"
+          ],
           "auth_required": true,
           "rate_limit": "10/min",
           "author": "AI_Assistant",
@@ -447,8 +724,15 @@
           "start_tag": "# AGORA_BLOCK: start:ai_translate",
           "end_tag": "# AGORA_BLOCK: end:ai_translate",
           "description": "Эндпоинт /ai/translate с контекстом",
-          "dependencies": ["translation_ai", "error_handler", "cache_service", "circuit_breaker"],
-          "methods": ["POST"],
+          "dependencies": [
+            "translation_ai",
+            "error_handler",
+            "cache_service",
+            "circuit_breaker"
+          ],
+          "methods": [
+            "POST"
+          ],
           "auth_required": true,
           "rate_limit": "30/min",
           "author": "AI_Assistant",
@@ -461,8 +745,15 @@
           "start_tag": "# AGORA_BLOCK: start:ai_risk_check",
           "end_tag": "# AGORA_BLOCK: end:ai_risk_check",
           "description": "Эндпоинт /ai/risk_check с аналитикой",
-          "dependencies": ["risk_assessor_ai", "error_handler", "cache_service", "circuit_breaker"],
-          "methods": ["POST"],
+          "dependencies": [
+            "risk_assessor_ai",
+            "error_handler",
+            "cache_service",
+            "circuit_breaker"
+          ],
+          "methods": [
+            "POST"
+          ],
           "auth_required": true,
           "rate_limit": "15/min",
           "author": "AI_Assistant",
@@ -475,8 +766,15 @@
           "start_tag": "# AGORA_BLOCK: start:ai_find_carrier",
           "end_tag": "# AGORA_BLOCK: end:ai_find_carrier",
           "description": "Эндпоинт /ai/find_carrier с фильтрацией",
-          "dependencies": ["logistics_ai", "error_handler", "cache_service", "circuit_breaker"],
-          "methods": ["POST"],
+          "dependencies": [
+            "logistics_ai",
+            "error_handler",
+            "cache_service",
+            "circuit_breaker"
+          ],
+          "methods": [
+            "POST"
+          ],
           "auth_required": true,
           "rate_limit": "20/min",
           "author": "AI_Assistant",
@@ -489,8 +787,15 @@
           "start_tag": "# AGORA_BLOCK: start:reputation_rating",
           "end_tag": "# AGORA_BLOCK: end:reputation_rating",
           "description": "Эндпоинт /reputation/rating с историей",
-          "dependencies": ["reputation_system", "error_handler", "cache_service", "circuit_breaker"],
-          "methods": ["GET"],
+          "dependencies": [
+            "reputation_system",
+            "error_handler",
+            "cache_service",
+            "circuit_breaker"
+          ],
+          "methods": [
+            "GET"
+          ],
           "auth_required": false,
           "rate_limit": "50/min",
           "author": "AI_Assistant",
@@ -503,8 +808,15 @@
           "start_tag": "# AGORA_BLOCK: start:blockchain_register_match",
           "end_tag": "# AGORA_BLOCK: end:blockchain_register_match",
           "description": "Эндпоинт /blockchain/register_match с гарантиями",
-          "dependencies": ["blockchain_integration", "error_handler", "cache_service", "circuit_breaker"],
-          "methods": ["POST"],
+          "dependencies": [
+            "blockchain_integration",
+            "error_handler",
+            "cache_service",
+            "circuit_breaker"
+          ],
+          "methods": [
+            "POST"
+          ],
           "auth_required": true,
           "rate_limit": "10/min",
           "author": "AI_Assistant",
@@ -522,8 +834,15 @@
           "start_tag": "# AGORA_BLOCK: start:telegram_integration",
           "end_tag": "# AGORA_BLOCK: end:telegram_integration",
           "description": "Интеграция с Telegram API и Groups, обработка initData и управление сессиями",
-          "dependencies": ["error_handler", "monitoring_service"],
-          "events": ["telegram.message.received", "telegram.callback.received", "telegram.session.updated"],
+          "dependencies": [
+            "error_handler",
+            "monitoring_service"
+          ],
+          "events": [
+            "telegram.message.received",
+            "telegram.callback.received",
+            "telegram.session.updated"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -534,8 +853,14 @@
           "start_tag": "# AGORA_BLOCK: start:cloudflare_integration",
           "end_tag": "# AGORA_BLOCK: end:cloudflare_integration",
           "description": "Интеграция с Cloudflare Workers и Pages",
-          "dependencies": ["error_handler", "monitoring_service"],
-          "events": ["worker.request.received", "worker.response.sent"],
+          "dependencies": [
+            "error_handler",
+            "monitoring_service"
+          ],
+          "events": [
+            "worker.request.received",
+            "worker.response.sent"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -546,8 +871,14 @@
           "start_tag": "# AGORA_BLOCK: start:ai_providers",
           "end_tag": "# AGORA_BLOCK: end:ai_providers",
           "description": "Интеграция с AI-провайдерами (OpenAI, DeepSeek, Claude)",
-          "dependencies": ["error_handler", "monitoring_service"],
-          "events": ["ai.request.sent", "ai.response.received"],
+          "dependencies": [
+            "error_handler",
+            "monitoring_service"
+          ],
+          "events": [
+            "ai.request.sent",
+            "ai.response.received"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -558,8 +889,14 @@
           "start_tag": "# AGORA_BLOCK: start:external_apis",
           "end_tag": "# AGORA_BLOCK: end:external_apis",
           "description": "Интеграция с внешними API (KYC, логистика, платежи)",
-          "dependencies": ["error_handler", "monitoring_service"],
-          "events": ["external.api.requested", "external.api.responded"],
+          "dependencies": [
+            "error_handler",
+            "monitoring_service"
+          ],
+          "events": [
+            "external.api.requested",
+            "external.api.responded"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -570,8 +907,14 @@
           "start_tag": "# AGORA_BLOCK: start:blockchain_integration",
           "end_tag": "# AGORA_BLOCK: end:blockchain_integration",
           "description": "Интеграция с блокчейном (TON/Arweave) с гарантиями",
-          "dependencies": ["error_handler", "monitoring_service"],
-          "events": ["blockchain.transaction.sent", "blockchain.transaction.confirmed"],
+          "dependencies": [
+            "error_handler",
+            "monitoring_service"
+          ],
+          "events": [
+            "blockchain.transaction.sent",
+            "blockchain.transaction.confirmed"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -598,8 +941,13 @@
           "start_tag": "# AGORA_BLOCK: start:cache_service",
           "end_tag": "# AGORA_BLOCK: end:cache_service",
           "description": "Сервис кэширования с Redis и стратегиями для разных типов данных",
-          "dependencies": ["event_bus"],
-          "events": ["cache.invalidated", "cache.cleared"],
+          "dependencies": [
+            "event_bus"
+          ],
+          "events": [
+            "cache.invalidated",
+            "cache.cleared"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -610,7 +958,9 @@
           "start_tag": "# AGORA_BLOCK: start:translation_cache",
           "end_tag": "# AGORA_BLOCK: end:translation_cache",
           "description": "Кэш переводов с TTL и языковыми ключами",
-          "dependencies": ["cache_service"],
+          "dependencies": [
+            "cache_service"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -621,7 +971,9 @@
           "start_tag": "# AGORA_BLOCK: start:embedding_cache",
           "end_tag": "# AGORA_BLOCK: end:embedding_cache",
           "description": "Кэш векторов по ID и типу запроса",
-          "dependencies": ["cache_service"],
+          "dependencies": [
+            "cache_service"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -632,7 +984,9 @@
           "start_tag": "# AGORA_BLOCK: start:session_cache",
           "end_tag": "# AGORA_BLOCK: end:session_cache",
           "description": "Кэш пользовательских сессий (например, токенов)",
-          "dependencies": ["cache_service"],
+          "dependencies": [
+            "cache_service"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -643,7 +997,9 @@
           "start_tag": "# AGORA_BLOCK: start:storage_service",
           "end_tag": "# AGORA_BLOCK: end:storage_service",
           "description": "Сервис хранения файлов (S3, IPFS, Arweave)",
-          "dependencies": ["error_handler"],
+          "dependencies": [
+            "error_handler"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -654,8 +1010,13 @@
           "start_tag": "# AGORA_BLOCK: start:monitoring_service",
           "end_tag": "# AGORA_BLOCK: end:monitoring_service",
           "description": "Сервис мониторинга и логирования",
-          "dependencies": ["event_bus"],
-          "events": ["metrics.recorded", "log.generated"],
+          "dependencies": [
+            "event_bus"
+          ],
+          "events": [
+            "metrics.recorded",
+            "log.generated"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -677,8 +1038,13 @@
           "start_tag": "# AGORA_BLOCK: start:error_handler",
           "end_tag": "# AGORA_BLOCK: end:error_handler",
           "description": "Централизованная обработка ошибок",
-          "dependencies": ["monitoring_service"],
-          "events": ["error.occurred", "error.handled"],
+          "dependencies": [
+            "monitoring_service"
+          ],
+          "events": [
+            "error.occurred",
+            "error.handled"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -689,8 +1055,13 @@
           "start_tag": "# AGORA_BLOCK: start:circuit_breaker",
           "end_tag": "# AGORA_BLOCK: end:circuit_breaker",
           "description": "Circuit Breaker для отказоустойчивости",
-          "dependencies": ["monitoring_service"],
-          "events": ["circuit.opened", "circuit.closed"],
+          "dependencies": [
+            "monitoring_service"
+          ],
+          "events": [
+            "circuit.opened",
+            "circuit.closed"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -712,7 +1083,9 @@
           "start_tag": "# AGORA_BLOCK: start:git_integration",
           "end_tag": "# AGORA_BLOCK: end:git_integration",
           "description": "Интеграция с Git для автоматического коммита изменений",
-          "dependencies": ["code_utils"],
+          "dependencies": [
+            "code_utils"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -723,7 +1096,10 @@
           "start_tag": "// AGORA_BLOCK: start:file_uploader",
           "end_tag": "// AGORA_BLOCK: end:file_uploader",
           "description": "Загрузка и обработка файлов",
-          "dependencies": ["storage_service", "error_handler"],
+          "dependencies": [
+            "storage_service",
+            "error_handler"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -734,8 +1110,14 @@
           "start_tag": "// AGORA_BLOCK: start:realtime_service",
           "end_tag": "// AGORA_BLOCK: end:realtime_service",
           "description": "Real-time коммуникации через WebSocket",
-          "dependencies": ["event_bus", "error_handler"],
-          "events": ["connection.established", "message.delivered"],
+          "dependencies": [
+            "event_bus",
+            "error_handler"
+          ],
+          "events": [
+            "connection.established",
+            "message.delivered"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -746,7 +1128,9 @@
           "start_tag": "// AGORA_BLOCK: start:map_service",
           "end_tag": "// AGORA_BLOCK: end:map_service",
           "description": "Работа с картами и геоданными",
-          "dependencies": ["error_handler"],
+          "dependencies": [
+            "error_handler"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
@@ -762,8 +1146,17 @@
           "start_tag": "# AGORA_BLOCK: start:mvp_workflow",
           "end_tag": "# AGORA_BLOCK: end:mvp_workflow",
           "description": "Базовый CI/CD pipeline для MVP с автоматическими тестами",
-          "dependencies": ["unit_tests", "integration_tests", "e2e_tests"],
-          "stages": ["test", "build", "deploy-staging", "deploy-production"],
+          "dependencies": [
+            "unit_tests",
+            "integration_tests",
+            "e2e_tests"
+          ],
+          "stages": [
+            "test",
+            "build",
+            "deploy-staging",
+            "deploy-production"
+          ],
           "author": "AI_Assistant",
           "version": "1.0.0",
           "last_modified": "2023-11-15T00:00:00Z"
