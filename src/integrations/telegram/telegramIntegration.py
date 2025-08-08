@@ -1,3 +1,4 @@
+# AGORA_FILE: start:src/integrations/telegram/telegramIntegration.py
 # AGORA_BLOCK: start:telegram_integration
 import os
 import hashlib
@@ -18,6 +19,7 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# AGORA_BLOCK: start:telegram_init_data_model
 class TelegramInitData(BaseModel):
     """Модель для валидации initData от Telegram"""
     query_id: str
@@ -30,10 +32,13 @@ class TelegramInitData(BaseModel):
     def validate_hash(cls, v):
         # Временно пропускаем валидацию для разработки
         return v
+# AGORA_BLOCK: end:telegram_init_data_model
 
+# AGORA_BLOCK: start:telegram_integration_class
 class TelegramIntegration:
     """Интеграция с Telegram API и обработка initData"""
     
+    # AGORA_BLOCK: start:init
     def __init__(self):
         # Получаем токен из переменных окружения
         self.bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
@@ -42,19 +47,12 @@ class TelegramIntegration:
         
         # Инициализация HTTP клиента
         self.http_client = httpx.AsyncClient(timeout=10.0)
+    # AGORA_BLOCK: end:init
     
+    # AGORA_BLOCK: start:validate_init_data
     async def validate_init_data(self, init_data: str) -> Dict[str, Any]:
         """
         Валидация initData от Telegram
-        
-        Args:
-            init_data: Строка с данными от Telegram
-            
-        Returns:
-            Словарь с валидированными данными
-            
-        Raises:
-            HTTPException: Если данные невалидны
         """
         try:
             # Парсинг строки запроса
@@ -81,20 +79,14 @@ class TelegramIntegration:
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Невалидные initData"
             )
+    # AGORA_BLOCK: end:validate_init_data
     
+    # AGORA_BLOCK: start:get_user_info
     async def get_user_info(self, telegram_id: int) -> Optional[Dict[str, Any]]:
         """
         Получение информации о пользователе из Telegram
-        
-        Args:
-            telegram_id: ID пользователя в Telegram
-            
-        Returns:
-            Словарь с информацией о пользователе или None
         """
         try:
-            # В будущем здесь будет запрос к Telegram API
-            # Пока возвращаем тестовые данные
             return {
                 "id": telegram_id,
                 "first_name": "Test",
@@ -104,17 +96,12 @@ class TelegramIntegration:
         except Exception as e:
             logger.error(f"Ошибка получения информации о пользователе: {e}")
             return None
+    # AGORA_BLOCK: end:get_user_info
     
+    # AGORA_BLOCK: start:send_message
     async def send_message(self, chat_id: int, text: str) -> bool:
         """
         Отправка сообщения в Telegram
-        
-        Args:
-            chat_id: ID чата
-            text: Текст сообщения
-            
-        Returns:
-            True если сообщение отправлено успешно
         """
         try:
             url = f"https://api.telegram.org/bot{self.bot_token}/sendMessage"
@@ -130,22 +117,18 @@ class TelegramIntegration:
         except Exception as e:
             logger.error(f"Ошибка отправки сообщения: {e}")
             return False
+    # AGORA_BLOCK: end:send_message
     
+    # AGORA_BLOCK: start:create_chat_invite_link
     async def create_chat_invite_link(self, chat_id: int) -> Optional[str]:
         """
         Создание ссылки-приглашения в чат
-        
-        Args:
-            chat_id: ID чата
-            
-        Returns:
-            Ссылка-приглашение или None
         """
         try:
             url = f"https://api.telegram.org/bot{self.bot_token}/createChatInviteLink"
             payload = {
                 "chat_id": chat_id,
-                "member_limit": 2  # Только 2 участника
+                "member_limit": 2
             }
             
             response = await self.http_client.post(url, json=payload)
@@ -157,7 +140,10 @@ class TelegramIntegration:
         except Exception as e:
             logger.error(f"Ошибка создания ссылки-приглашения: {e}")
             return None
+    # AGORA_BLOCK: end:create_chat_invite_link
+# AGORA_BLOCK: end:telegram_integration_class
 
 # Создаем экземпляр интеграции
 telegram_integration = TelegramIntegration()
 # AGORA_BLOCK: end:telegram_integration
+# AGORA_FILE: end:src/integrations/telegram/telegramIntegration.py
