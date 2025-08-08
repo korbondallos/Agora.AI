@@ -22,20 +22,15 @@ async def test_telegram_real():
         user_data = await telegram_integration.validate_init_data(real_init_data)
         print(f"✅ Валидация успешна")
         
-        # Распарсим поле user вручную, так как оно приходит как URL-encoded строка
-        if 'user' in user_data:
-            from urllib.parse import unquote
-            user_str = unquote(user_data['user'])
-            user_info = json.loads(user_str)
-            print(f"   User ID: {user_info.get('id')}")
-            print(f"   First Name: {user_info.get('first_name')}")
-            print(f"   Username: {user_info.get('username')}")
-        else:
-            print("   Поле user не найдено в данных")
+        # Теперь user_data['user'] уже распарсен в объект
+        user_info = user_data.get('user', {})
+        print(f"   User ID: {user_info.get('id')}")
+        print(f"   First Name: {user_info.get('first_name')}")
+        print(f"   Username: {user_info.get('username')}")
 
         # Тест 2: Получение информации о пользователе
         print("\nТест 2: Получение информации о пользователе")
-        user_id = user_info.get('id') if 'user_info' in locals() else 123456789
+        user_id = user_info.get('id')
         user_info = await telegram_integration.get_user_info(user_id)
         print(f"✅ Информация о пользователе получена")
         print(f"   {user_info}")
