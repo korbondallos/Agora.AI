@@ -1,7 +1,7 @@
 ================================================================================
 СТРУКТУРА ПРОЕКТА
 ================================================================================
-Дата создания: 2025-08-07 18:54:13
+Дата создания: 2025-08-08 00:17:37
 Корневая директория: E:\2. Documents\Agora.AI\Project\Agora.AI
 ================================================================================
 
@@ -36,6 +36,8 @@
 ├── .gitignore
 ├── README.md
 ├── app.py
+├── main.py
+├── project_structure.txt
 └── test_env.py
 
 ================================================================================
@@ -926,8 +928,8 @@ if __name__ == "__main__":
             "telegram.session.updated"
           ],
           "author": "AI_Assistant",
-          "version": "1.0.0",
-          "last_modified": "2023-11-15T00:00:00Z"
+          "version": "1.0.5",
+          "last_modified": "2025-08-07T23:55:27.353727"
         },
         "cloudflare_integration": {
           "id": "cloudflare_integration",
@@ -1100,8 +1102,8 @@ if __name__ == "__main__":
             "log.generated"
           ],
           "author": "AI_Assistant",
-          "version": "1.0.0",
-          "last_modified": "2023-11-15T00:00:00Z"
+          "version": "1.0.1",
+          "last_modified": "2025-08-08T00:11:36.733901"
         },
         "config_service": {
           "id": "config_service",
@@ -1353,12 +1355,228 @@ if __name__ == "__main__":
 }
 
 ================================================================================
+ФАЙЛ: main.py
+================================================================================
+# AGORA_BLOCK: start:main_app
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+import time
+from src.api.auth import router as auth_router
+from src.infrastructure.monitoring.monitoringService import monitoring_service
+from src.infrastructure.error.errorHandler import ErrorHandler
+
+# AGORA_BLOCK: start:app_initialization
+# Создание приложения FastAPI
+app = FastAPI(
+   title="Agora.AI API",
+   description="Интеллектуальная платформа B2B-сотрудничества",
+   version="1.0.0"
+)
+# AGORA_BLOCK: end:app_initialization
+
+# AGORA_BLOCK: start:cors_setup
+# Настройка CORS
+app.add_middleware(
+   CORSMiddleware,
+   allow_origins=["*"],  # В проде нужно указать конкретные домены
+   allow_credentials=True,
+   allow_methods=["*"],
+   allow_headers=["*"],
+)
+# AGORA_BLOCK: end:cors_setup
+
+# AGORA_BLOCK: start:routers_registration
+# Подключение роутеров
+app.include_router(auth_router, prefix="/api/v1")
+# TODO: Добавить другие роутеры по мере создания
+# app.include_router(profile_router, prefix="/api/v1")
+# app.include_router(match_router, prefix="/api/v1")
+# app.include_router(logistics_router, prefix="/api/v1")
+# app.include_router(contract_router, prefix="/api/v1")
+# app.include_router(ai_router, prefix="/api/v1")
+# app.include_router(reputation_router, prefix="/api/v1")
+# app.include_router(blockchain_router, prefix="/api/v1")
+# AGORA_BLOCK: end:routers_registration
+
+# AGORA_BLOCK: start:middleware_logging
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+   """Middleware для логирования запросов"""
+   start_time = time.time()
+   
+   response = await call_next(request)
+   
+   # Расчет времени выполнения
+   process_time = time.time() - start_time
+   
+   # Логирование запроса
+   monitoring_service.increment_api_requests(
+       endpoint=request.url.path,
+       method=request.method,
+       status=response.status_code
+   )
+   
+   # Отслеживание длительности запроса
+   monitoring_service.track_request_duration(process_time)
+   
+   # Добавление заголовков с метриками
+   response.headers["X-Process-Time"] = str(process_time)
+   
+   return response
+# AGORA_BLOCK: end:middleware_logging
+
+# AGORA_BLOCK: start:exception_handlers
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+   """Глобальный обработчик исключений"""
+   error_info = ErrorHandler.handle_error(exc, "global")
+   
+   # Логирование ошибки
+   monitoring_service.increment_api_errors(
+       endpoint=request.url.path,
+       status=500
+   )
+   
+   return JSONResponse(
+       status_code=500,
+       content={"detail": "Внутренняя ошибка сервера"}
+   )
+
+@app.exception_handler(404)
+async def not_found_handler(request: Request, exc):
+   """Обработчик для 404 ошибок"""
+   return JSONResponse(
+       status_code=404,
+       content={"detail": "Ресурс не найден"}
+   )
+
+@app.exception_handler(422)
+async def validation_exception_handler(request: Request, exc):
+   """Обработчик ошибок валидации"""
+   return JSONResponse(
+       status_code=422,
+       content={"detail": "Ошибка валидации данных", "errors": str(exc)}
+   )
+# AGORA_BLOCK: end:exception_handlers
+
+# AGORA_BLOCK: start:startup_shutdown_events
+@app.on_event("startup")
+async def startup_event():
+   """События при запуске приложения"""
+   monitoring_service.log_event("app.startup", {"message": "Agora.AI API starting..."})
+   # TODO: Инициализация подключений к БД
+   # TODO: Инициализация кэша
+   # TODO: Проверка переменных окружения
+
+@app.on_event("shutdown")
+async def shutdown_event():
+   """События при остановке приложения"""
+   monitoring_service.log_event("app.shutdown", {"message": "Agora.AI API shutting down..."})
+   # TODO: Закрытие подключений к БД
+   # TODO: Очистка кэша
+   # TODO: Сохранение состояния
+# AGORA_BLOCK: end:startup_shutdown_events
+
+# AGORA_BLOCK: start:health_endpoints
+@app.get("/")
+async def root():
+   """Корневой эндпоинт для проверки работы API"""
+   return {
+       "message": "Agora.AI API is running",
+       "version": "1.0.0",
+       "docs": "/docs",
+       "health": "/health"
+   }
+
+@app.get("/health")
+async def health_check():
+   """Эндпоинт для проверки здоровья сервиса"""
+   return {
+       "status": "healthy",
+       "timestamp": time.time(),
+       "uptime": getattr(app, 'start_time', None)
+   }
+
+@app.get("/health/ready")
+async def readiness_check():
+   """Проверка готовности сервиса к работе"""
+   # TODO: Проверить подключение к БД
+   # TODO: Проверить доступность внешних сервисов
+   return {
+       "status": "ready",
+       "checks": {
+           "database": "ok",
+           "cache": "ok",
+           "external_apis": "ok"
+       }
+   }
+
+@app.get("/health/live")
+async def liveness_check():
+   """Проверка что сервис живой"""
+   return {"status": "alive"}
+# AGORA_BLOCK: end:health_endpoints
+
+# AGORA_BLOCK: start:api_info_endpoints
+@app.get("/api/v1/info")
+async def api_info():
+   """Информация об API"""
+   return {
+       "name": "Agora.AI API",
+       "version": "1.0.0",
+       "description": "Интеллектуальная платформа B2B-сотрудничества",
+       "endpoints": {
+           "auth": "/api/v1/auth",
+           "profile": "/api/v1/profile",
+           "match": "/api/v1/match",
+           "logistics": "/api/v1/logistics",
+           "contract": "/api/v1/contract",
+           "ai": "/api/v1/ai",
+           "reputation": "/api/v1/reputation",
+           "blockchain": "/api/v1/blockchain"
+       }
+   }
+
+@app.get("/api/v1/metrics")
+async def metrics_endpoint():
+   """Базовые метрики приложения"""
+   # TODO: Вернуть актуальные метрики
+   return {
+       "requests_total": 0,
+       "errors_total": 0,
+       "active_users": 0,
+       "active_negotiations": 0,
+       "successful_matches": 0
+   }
+# AGORA_BLOCK: end:api_info_endpoints
+
+# AGORA_BLOCK: start:main_entry_point
+if __name__ == "__main__":
+   import uvicorn
+   
+   # Устанавливаем время запуска
+   app.start_time = time.time()
+   
+   # Запуск сервера
+   uvicorn.run(
+       app, 
+       host="0.0.0.0", 
+       port=8000,
+       reload=True,  # Автоперезагрузка при изменениях (только для разработки)
+       log_level="info"
+   )
+# AGORA_BLOCK: end:main_entry_point
+
+# AGORA_BLOCK: end:main_app
+
+================================================================================
 ФАЙЛ: project_structure.txt
 ================================================================================
 ================================================================================
 СТРУКТУРА ПРОЕКТА
 ================================================================================
-Дата создания: 2025-08-07 18:54:13
+Дата создания: 2025-08-08 00:17:37
 Корневая директория: E:\2. Documents\Agora.AI\Project\Agora.AI
 ================================================================================
 
@@ -1393,6 +1611,8 @@ if __name__ == "__main__":
 ├── .gitignore
 ├── README.md
 ├── app.py
+├── main.py
+├── project_structure.txt
 └── test_env.py
 
 ================================================================================
@@ -2283,8 +2503,8 @@ if __name__ == "__main__":
             "telegram.session.updated"
           ],
           "author": "AI_Assistant",
-          "version": "1.0.0",
-          "last_modified": "2023-11-15T00:00:00Z"
+          "version": "1.0.5",
+          "last_modified": "2025-08-07T23:55:27.353727"
         },
         "cloudflare_integration": {
           "id": "cloudflare_integration",
@@ -2457,8 +2677,8 @@ if __name__ == "__main__":
             "log.generated"
           ],
           "author": "AI_Assistant",
-          "version": "1.0.0",
-          "last_modified": "2023-11-15T00:00:00Z"
+          "version": "1.0.1",
+          "last_modified": "2025-08-08T00:11:36.733901"
         },
         "config_service": {
           "id": "config_service",
@@ -2892,24 +3112,27 @@ logger = logging.getLogger(__name__)
 
 class MonitoringService:
     """Сервис мониторинга и логирования"""
-    
+
     def __init__(self, port: int = 8001):
-        # Запуск Prometheus метрик
-        start_http_server(port)
-        
-        # Основные метрики
-        self.api_requests = Counter('agora_api_requests_total', 'API requests', ['endpoint', 'method', 'status'])
-        self.api_errors = Counter('agora_api_errors_total', 'API errors', ['endpoint', 'status'])
-        self.active_negotiations = Gauge('agora_active_negotiations', 'Active negotiations count')
-        self.successful_matches = Counter('agora_successful_matches_total', 'Successful matches count')
-        self.request_duration = Histogram('agora_request_duration_seconds', 'Request duration')
-        
-        logger.info(f"Monitoring service started on port {port}")
-    
+        try:
+            # Запуск Prometheus метрик
+            start_http_server(port)
+
+            # Основные метрики
+            self.api_requests = Counter('agora_api_requests_total', 'API requests', ['endpoint', 'method', 'status'])
+            self.api_errors = Counter('agora_api_errors_total', 'API errors', ['endpoint', 'status'])
+            self.active_negotiations = Gauge('agora_active_negotiations', 'Active negotiations count')
+            self.successful_matches = Counter('agora_successful_matches_total', 'Successful matches count')
+            self.request_duration = Histogram('agora_request_duration_seconds', 'Request duration')
+
+            logger.info(f"Monitoring service started on port {port}")
+        except Exception as e:
+            logger.warning(f"Monitoring service already running or port {port} is busy: {e}")
+
     def log_event(self, event_name: str, data: Optional[Dict[str, Any]] = None) -> None:
         """
         Логирование события
-        
+
         Args:
             event_name: Название события
             data: Дополнительные данные
@@ -2918,47 +3141,47 @@ class MonitoringService:
             logger.info(f"Event: {event_name}, Data: {data}")
         else:
             logger.info(f"Event: {event_name}")
-    
+
     def increment_api_requests(self, endpoint: str, method: str, status: int) -> None:
         """
         Увеличение счетчика API запросов
-        
+
         Args:
             endpoint: Эндпоинт
             method: HTTP метод
             status: HTTP статус
         """
         self.api_requests.labels(endpoint=endpoint, method=method, status=status).inc()
-    
+
     def increment_api_errors(self, endpoint: str, status: int) -> None:
         """
         Увеличение счетчика ошибок API
-        
+
         Args:
             endpoint: Эндпоинт
             status: HTTP статус
         """
         self.api_errors.labels(endpoint=endpoint, status=status).inc()
-    
+
     def track_negotiation_start(self) -> None:
         """Отслеживание начала переговоров"""
         self.active_negotiations.inc()
-    
+
     def track_negotiation_end(self, success: bool = True) -> None:
         """
         Отслеживание окончания переговоров
-        
+
         Args:
             success: Успешность переговоров
         """
         self.active_negotiations.dec()
         if success:
             self.successful_matches.inc()
-    
+
     def track_request_duration(self, duration: float) -> None:
         """
         Отслеживание длительности запроса
-        
+
         Args:
             duration: Длительность в секундах
         """
@@ -2978,7 +3201,7 @@ import hmac
 import json
 from typing import Dict, Optional, Any
 from fastapi import HTTPException, status
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, field_validator
 import httpx
 import logging
 from dotenv import load_dotenv
@@ -2997,8 +3220,9 @@ class TelegramInitData(BaseModel):
     auth_date: int
     hash: str
 
-    @validator('hash')
-    def validate_hash(cls, v, values):
+    @field_validator('hash')
+    @classmethod
+    def validate_hash(cls, v):
         # Временно пропускаем валидацию для разработки
         return v
 
@@ -3711,33 +3935,234 @@ if __name__ == "__main__":
 # AGORA_BLOCK: start:update_code
 import sys
 import os
+import argparse
+import pyperclip
+import re
+from pathlib import Path
 
 # Добавляем корневую директорию проекта в sys.path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-
 from src.utils.code_utils import CodeBlockManager
 from src.utils.git_integration import GitIntegration
 
-def update_block(block_id, new_code):
-    manager = CodeBlockManager()
-    result = manager.replace_block(block_id, new_code)
-    print(result)
+def clean_code(code):
+    """Очистка кода от лишних пустых строк и нормализация переносов"""
+    if not code:
+        return code
     
-    # Автоматический коммит
-    GitIntegration.commit_changes(block_id)
-    print("Changes committed to Git")
+    # Разделяем на строки
+    lines = code.splitlines()
+    
+    # Удаляем пустые строки в начале и конце
+    while lines and lines[0].strip() == '':
+        lines.pop(0)
+    while lines and lines[-1].strip() == '':
+        lines.pop()
+    
+    # Нормализуем пустые строки (оставляем только по одной пустой строке между блоками)
+    cleaned_lines = []
+    prev_empty = False
+    
+    for line in lines:
+        is_empty = line.strip() == ''
+        
+        # Добавляем пустую строку только если предыдущая не была пустой
+        if is_empty and not prev_empty:
+            cleaned_lines.append('')
+        elif not is_empty:
+            cleaned_lines.append(line)
+        
+        prev_empty = is_empty
+    
+    # Удаляем последнюю пустую строку, если она есть
+    if cleaned_lines and cleaned_lines[-1] == '':
+        cleaned_lines.pop()
+    
+    # Объединяем с правильными переносами строк
+    return '\n'.join(cleaned_lines)
 
-if __name__ == "__main__":
-    import sys
+def find_block_by_tag(tag_name):
+    """Найти блок по тегу"""
+    manager = CodeBlockManager()
     
-    if len(sys.argv) < 3:
-        print("Usage: python src/utils/update_code.py <block_id> <new_code>")
+    # Поддерживаем оба формата: с префиксом и без
+    possible_tags = [
+        f"# AGORA_BLOCK: start:{tag_name}",
+        tag_name if tag_name.startswith("# AGORA_BLOCK: start:") else None
+    ]
+    
+    for full_tag in possible_tags:
+        if full_tag is None:
+            continue
+            
+        for layer_name, layer in manager.code_map['layers'].items():
+            for block_id, block_info in layer['modules'].items():
+                if block_info['start_tag'] == full_tag:
+                    return block_id
+    
+    return None
+
+def read_code_from_file(file_path):
+    """Чтение кода из файла"""
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            code = f.read()
+            return clean_code(code)
+    except Exception as e:
+        print(f"Ошибка чтения файла: {e}")
+        return None
+
+def read_code_from_clipboard():
+    """Чтение кода из буфера обмена"""
+    try:
+        code = pyperclip.paste()
+        return clean_code(code)
+    except Exception as e:
+        print(f"Ошибка чтения из буфера обмена: {e}")
+        return None
+
+def read_code_interactive():
+    """Интерактивный ввод кода"""
+    print("Введите код (завершите пустой строкой):")
+    lines = []
+    while True:
+        line = input()
+        if line == "":
+            break
+        lines.append(line)
+    return clean_code('\n'.join(lines))
+
+def update_block(block_id, new_code, no_commit=False, confirm=False, dry_run=False):
+    """Обновление блока кода"""
+    manager = CodeBlockManager()
+    
+    if confirm:
+        print(f"Будет обновлен блок: {block_id}")
+        print(f"Новый код ({len(new_code)} символов):")
+        print("-" * 40)
+        print(new_code[:200] + "..." if len(new_code) > 200 else new_code)
+        print("-" * 40)
+        
+        response = input("Подтвердить обновление? (y/N): ")
+        if response.lower() != 'y':
+            print("Обновление отменено")
+            return False
+    
+    if dry_run:
+        print(f"[DRY RUN] Блок {block_id} будет обновлен")
+        print(f"Новый код ({len(new_code)} символов):")
+        print("-" * 40)
+        print(new_code)
+        print("-" * 40)
+        return True
+    
+    try:
+        result = manager.replace_block(block_id, new_code)
+        print(result)
+        
+        if not no_commit:
+            GitIntegration.commit_changes(block_id)
+            print("Changes committed to Git")
+        else:
+            print("Изменения сохранены без коммита")
+        
+        return True
+    except Exception as e:
+        print(f"Ошибка при обновлении блока: {e}")
+        return False
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Утилита для обновления блоков кода по тегам",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Примеры использования:
+  # По тегу (рекомендуется)
+  python src/utils/update_code.py --tag monitoring_service --clipboard
+  python src/utils/update_code.py -t telegram_integration --file code.txt
+
+  # По ID (старый способ)
+  python src/utils/update_code.py block_id --clipboard
+
+  # Другие опции
+  python src/utils/update_code.py --tag monitoring_service --interactive --confirm
+  python src/utils/update_code.py --tag monitoring_service --file code.txt --dry-run
+
+Поддерживаемые форматы тегов:
+  - Короткий: monitoring_service
+  - Полный: "# AGORA_BLOCK: start:monitoring_service"
+        """
+    )
+    
+    # Группа для идентификации блока (ID или тег)
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument('block_id', nargs='?', help='ID блока для обновления (старый способ)')
+    group.add_argument('--tag', '-t', help='Тег блока (рекомендуется)')
+    
+    # Группа для источника кода
+    source_group = parser.add_mutually_exclusive_group()
+    source_group.add_argument('--code', help='Код для замены (для короткого кода)')
+    source_group.add_argument('--file', '-f', help='Файл с кодом для замены')
+    source_group.add_argument('--clipboard', '-c', action='store_true', help='Взять код из буфера обмена')
+    source_group.add_argument('--interactive', '-i', action='store_true', help='Интерактивный ввод кода')
+    
+    # Опции управления
+    parser.add_argument('--no-commit', action='store_true', help='Не делать автоматический коммит')
+    parser.add_argument('--confirm', action='store_true', help='Запросить подтверждение перед обновлением')
+    parser.add_argument('--dry-run', action='store_true', help='Тестовый запуск без реальных изменений')
+    
+    args = parser.parse_args()
+    
+    # Определяем блок для обновления
+    block_id = None
+    
+    if args.tag:
+        # Ищем блок по тегу
+        block_id = find_block_by_tag(args.tag)
+        if not block_id:
+            print(f"Ошибка: Блок с тегом '{args.tag}' не найден")
+            print("Проверьте правильность тега или используйте список доступных тегов")
+            sys.exit(1)
+        print(f"Найден блок: {block_id} (по тегу: {args.tag})")
+    else:
+        block_id = args.block_id
+    
+    # Определяем источник кода
+    new_code = None
+    
+    if args.code:
+        new_code = clean_code(args.code)
+    elif args.file:
+        new_code = read_code_from_file(args.file)
+    elif args.clipboard:
+        new_code = read_code_from_clipboard()
+        if new_code:
+            print(f"Код из буфера обмена ({len(new_code)} символов) - очищен")
+    elif args.interactive:
+        new_code = read_code_interactive()
+    else:
+        # По умолчанию пробуем буфер обмена
+        new_code = read_code_from_clipboard()
+        if not new_code:
+            print("Не удалось получить код из буфера обмена, используйте --file, --interactive или --code")
+            sys.exit(1)
+        else:
+            print(f"Код из буфера обмена ({len(new_code)} символов) - очищен")
+    
+    if not new_code:
+        print("Не удалось получить код для замены")
         sys.exit(1)
     
-    block_id = sys.argv[1]
-    new_code = sys.argv[2]
+    # Обновляем блок
+    success = update_block(block_id, new_code, args.no_commit, args.confirm, args.dry_run)
     
-    update_block(block_id, new_code)
+    if success:
+        print("Готово!")
+    else:
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()
 # AGORA_BLOCK: end:update_code
 
 ================================================================================

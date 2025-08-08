@@ -844,8 +844,8 @@
             "telegram.session.updated"
           ],
           "author": "AI_Assistant",
-          "version": "1.0.5",
-          "last_modified": "2025-08-07T23:55:27.353727"
+          "version": "1.0.6",
+          "last_modified": "2025-08-08T02:17:26.114978"
         },
         "cloudflare_integration": {
           "id": "cloudflare_integration",
